@@ -93,8 +93,9 @@ npm run dev        # http://localhost:4321/linscp-website/
 ```
 
 Manual pages are Markdown files in `src/content/docs/manual/`, one folder per
-sidebar group. The **Edit page** link at the bottom of each page opens the file
-on GitHub.
+sidebar group. A page at `/manual/connecting/host-keys/` lives in
+`src/content/docs/manual/connecting/host-keys.md`. Fork the repository, change
+the file and open a pull request; nothing goes live until the maintainer merges it.
 
 ### Read WRITING.md first
 

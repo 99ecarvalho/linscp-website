@@ -7,6 +7,7 @@ const group = (label, dir, collapsed = false) => ({
 });
 
 export const sidebar = [
+	{ label: 'Support linscp', link: '/donate/', badge: { text: 'Sponsor', variant: 'tip' } },
 	{ label: 'Manual overview', link: '/manual/' },
 	group('Start here', 'getting-started'),
 	group('Connecting', 'connecting'),

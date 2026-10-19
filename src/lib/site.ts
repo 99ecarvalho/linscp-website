@@ -1,5 +1,9 @@
 // Site-wide navigation and URL helpers.
 
+export const AUTHOR = 'Eduardo Correia';
+export const AUTHOR_URL = 'https://github.com/99ecarvalho';
+export const SPONSOR_URL = 'https://github.com/sponsors/99ecarvalho';
+
 export interface NavItem {
 	label: string;
 	href: string;

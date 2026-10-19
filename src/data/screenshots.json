@@ -1,0 +1,6 @@
+{
+	"commander.png": { "caption": "Commander layout", "alt": "linscp's Commander layout: local files on the left, the server on the right.", "order": 1, "hero": true },
+	"explorer.png": { "caption": "Explorer layout", "alt": "The Explorer layout with a folder tree beside the remote files.", "order": 2 },
+	"site-manager.png": { "caption": "Site Manager", "alt": "The Site Manager with saved connections.", "order": 3 },
+	"preferences.png": { "caption": "Preferences", "alt": "The Preferences window, Panels page.", "order": 4 }
+}

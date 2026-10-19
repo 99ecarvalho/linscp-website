@@ -1,13 +1,22 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import commander from '../assets/screenshots/commander.png';
-import explorer from '../assets/screenshots/explorer.png';
-import siteManager from '../assets/screenshots/site-manager.png';
+import type { ImageMetadata } from 'astro';
+import shotInfo from '../data/screenshots.json';
 import { getRelease, formatDate, RELEASES_URL } from '../lib/release';
-import { href } from '../lib/site';
+import { href, AUTHOR_URL } from '../lib/site';
 
 const release = await getRelease();
+
+// Every image in src/assets/screenshots/ that has an entry in src/data/screenshots.json.
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/screenshots/*.{png,jpg,jpeg,webp}', { eager: true });
+type Info = { caption: string; alt: string; order?: number; hero?: boolean };
+const shots = Object.entries(files)
+	.map(([path, mod]) => ({ name: path.split('/').pop()!, img: mod.default, ...(shotInfo as Record<string, Info>)[path.split('/').pop()!] }))
+	.filter((s) => s.caption)
+	.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+const hero = shots.find((s) => s.hero) ?? shots[0];
+const gallery = shots.filter((s) => s !== hero);
 const news = (await getCollection('docs', (e) => e.id.startsWith('news/') && e.data.date))
 	.sort((a, b) => +b.data.date! - +a.data.date!)
 	.slice(0, 3);
@@ -28,12 +37,19 @@ const features = [
 			<p class="ls-eyebrow">Free and open source · GPL 3</p>
 			<h1>Move files to any server, from Linux or Windows.</h1>
 			<p class="ls-lede">
-				linscp is a graphical file manager for SFTP, SCP, FTP, WebDAV and S3. It runs the protocol engine
-				proven in WinSCP inside a new Qt interface, so the same program works on both systems.
+				linscp is a graphical file manager for SFTP, SCP, FTP, WebDAV and S3. A proven transfer engine in a
+				native Qt interface gives you the same experience on Linux and Windows.
 			</p>
 			<div class="ls-hero-actions">
 				<a class="ls-button" href={href('/download/')}>Download linscp {release.version}</a>
 				<a class="ls-button secondary" href={href('/manual/')}>Read the manual</a>
+			</div>
+			<div class="ls-author">
+				<span class="ls-avatar" aria-hidden="true">EC</span>
+				<p>
+					Created and maintained by <a href={AUTHOR_URL}>Eduardo Correia</a>
+					<span>Independent and community-funded · <a href={href('/donate/')}>Sponsor linscp</a></span>
+				</p>
 			</div>
 			<p class="ls-hero-meta">
 				{release.prerelease ? 'Pre-release' : 'Release'} · {formatDate(release.date)} ·{' '}
@@ -41,7 +57,7 @@ const features = [
 			</p>
 		</div>
 		<figure class="ls-hero-shot">
-			<Image src={commander} alt="linscp's Commander layout: local files on the left, the server on the right." widths={[600, 1200]} sizes="(max-width: 60rem) 100vw, 40rem" loading="eager" />
+			<Image src={hero.img} alt={hero.alt} widths={[600, 1200]} sizes="(max-width: 60rem) 100vw, 40rem" loading="eager" />
 		</figure>
 	</section>
 
@@ -65,14 +81,16 @@ const features = [
 		<p class="ls-eyebrow">A closer look</p>
 		<h2 id="shots">Screenshots</h2>
 		<div class="ls-shot-grid">
-			<figure>
-				<Image src={explorer} alt="The Explorer layout with a folder tree beside the remote files." widths={[480, 960]} sizes="(max-width: 60rem) 100vw, 24rem" />
-				<figcaption>Explorer layout</figcaption>
-			</figure>
-			<figure>
-				<Image src={siteManager} alt="The Site Manager with saved connections." widths={[480, 960]} sizes="(max-width: 60rem) 100vw, 24rem" />
-				<figcaption>Site Manager</figcaption>
-			</figure>
+			{
+				gallery.map((s) => (
+					<figure>
+						<a href={s.img.src}>
+							<Image src={s.img} alt={s.alt} widths={[480, 960]} sizes="(max-width: 60rem) 100vw, 24rem" />
+						</a>
+						<figcaption>{s.caption}</figcaption>
+					</figure>
+				))
+			}
 		</div>
 	</section>
 
@@ -100,13 +118,21 @@ const features = [
 
 	<section class="ls-context">
 		<p class="ls-eyebrow">About the project</p>
-		<h2>The WinSCP core, at home on Linux.</h2>
+		<h2>One file manager for Linux and Windows.</h2>
 		<p>
-			WinSCP has been a trusted Windows client for over twenty years, but its interface only builds on
-			Windows. linscp keeps WinSCP's core unchanged and replaces the interface, so improvements made upstream
-			can keep flowing in. It is an independent project, not affiliated with WinSCP.
+			linscp brings a dependable two-panel file transfer client to Linux as a first-class program, and keeps
+			it identical on Windows, all from one codebase. It is free software under the GPL, developed in the
+			open by <a href={AUTHOR_URL}>Eduardo Correia</a> and shaped by the people who use it: every bug report,
+			translation and sponsorship moves it forward.
 		</p>
-		<a class="ls-cta" href={href('/manual/')}>How linscp relates to WinSCP</a>
+		<div class="ls-context-actions">
+			<a class="ls-button" href={href('/donate/')}>Support linscp</a>
+			<a class="ls-cta" href={href('/manual/getting-started/introduction/')}>What is linscp</a>
+		</div>
+		<p class="ls-credit">
+			linscp's transfer engine comes from the WinSCP project, with thanks.{' '}
+			<a href={href('/manual/about/license-and-credits/')}>Credits</a>
+		</p>
 	</section>
 </div>
 
@@ -216,6 +242,30 @@ const features = [
 	.ls-news li a:hover { color: var(--ls-deep); }
 	.ls-news li p:not(.ls-eyebrow) { margin: 0.35rem 0 0; font-size: 0.875rem; color: var(--ls-muted); }
 	.ls-context { border-bottom: 0; max-width: 42rem; }
+	.ls-context p a { color: var(--ls-deep); }
+	.ls-context-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 1.5rem; }
+	.ls-context .ls-credit { margin-top: 1.75rem; font-size: 0.75rem; }
+	.ls-author {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-top: 1.4rem;
+	}
+	.ls-avatar {
+		display: grid;
+		place-items: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		flex: none;
+		background: var(--ls-ink);
+		color: #fff;
+		font: 700 0.75rem var(--ls-mono);
+		letter-spacing: 0.04em;
+		box-shadow: inset 0 -3px 0 var(--ls-amber);
+	}
+	.ls-author p { margin: 0; font-size: 0.875rem; font-weight: 650; color: var(--sl-color-white); line-height: 1.4; }
+	.ls-author p a { color: var(--ls-deep); }
+	.ls-author p span { display: block; font-size: 0.75rem; font-weight: 400; color: var(--ls-muted); }
 	.ls-context p:not(.ls-eyebrow) { color: var(--ls-muted); line-height: 1.75; font-size: 0.9375rem; }
 
 	@media (max-width: 60rem) {

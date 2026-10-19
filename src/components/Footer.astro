@@ -2,10 +2,9 @@
 // Under every page: optional "Further reading" and "Keep exploring" blocks,
 // Starlight's edit link and pagination, then the site footer.
 import { getEntry } from 'astro:content';
-import EditLink from 'virtual:starlight/components/EditLink';
 import Pagination from 'virtual:starlight/components/Pagination';
 import logo from '../assets/linscp.svg';
-import { href } from '../lib/site';
+import { href, AUTHOR, AUTHOR_URL } from '../lib/site';
 
 const route = Astro.locals.starlightRoute;
 const { data } = route.entry;
@@ -61,7 +60,6 @@ const year = new Date().getFullYear();
 {
 	!isSplash && (
 		<div class="ls-page-tools print:hidden">
-			<EditLink />
 			<Pagination />
 		</div>
 	)
@@ -72,13 +70,14 @@ const year = new Date().getFullYear();
 		<img src={logo.src} alt="" width="22" height="22" />
 		<span translate="no">linscp</span>
 	</a>
-	<p>Free software under the GPL&nbsp;3. Built on the WinSCP core; not affiliated with the WinSCP project.</p>
+	<p>Free software, created and maintained by <a href={AUTHOR_URL}>{AUTHOR}</a>. <a href={href('/donate/')}>Sponsor the project</a>.</p>
 	<nav class="ls-foot-links" aria-label="Site information">
 		<a href={href('/download/')}>Download</a>
 		<a href={href('/manual/')}>Manual</a>
 		<a href={href('/support/')}>Support</a>
 		<a href={href('/donate/')}>Donate</a>
 		<a href={href("/manual/security/reporting-vulnerabilities/")}>Security</a>
+		<a href={href('/manual/about/license-and-credits/')}>Credits</a>
 		<a href="https://github.com/99ecarvalho/linscp-website">Site source</a>
 	</nav>
 	<span class="ls-copy">© {year} linscp contributors · Text under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a> · Site code under GPL 3</span>
@@ -150,6 +149,7 @@ const year = new Date().getFullYear();
 		text-decoration: none;
 	}
 	.ls-footer p { margin: 0; }
+	.ls-footer p a { color: var(--ls-deep); }
 	.ls-foot-links {
 		display: flex;
 		flex-wrap: wrap;

@@ -14,7 +14,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'linscp',
-			description: 'Free SFTP, SCP, FTP, WebDAV and S3 client for Linux and Windows.',
+			description: 'linscp: a free SFTP, SCP, FTP, WebDAV and S3 client for Linux and Windows.',
 			logo: { src: './src/assets/linscp.svg', alt: '' },
 			favicon: '/favicon.svg',
 			head: [
@@ -27,9 +27,6 @@ export default defineConfig({
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/99ecarvalho/linscp' },
 			],
-			editLink: {
-				baseUrl: 'https://github.com/99ecarvalho/linscp-website/edit/main/',
-			},
 			lastUpdated: true,
 			customCss: ['./src/styles/theme.css'],
 			components: {

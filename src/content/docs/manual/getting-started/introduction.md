@@ -9,9 +9,9 @@ related:
   - manual/getting-started/linscp-and-winscp
 ---
 
-linscp is a graphical file transfer client for Linux and Windows. It takes the
-protocol engine of WinSCP and puts a new Qt 6 interface on top of it, so the
-same program and the same settings work on both systems.
+linscp is a graphical file transfer client for Linux and Windows. A proven
+transfer engine and a native Qt 6 interface give you the same program and the
+same settings on both systems.
 
 ## What you can do with it
 
@@ -23,8 +23,8 @@ same program and the same settings work on both systems.
 - Compare two directories and bring them in line, or watch a local folder and
   mirror its changes to the server.
 - Queue transfers and let them run in the background while you keep working.
-- Automate all of this with `linscp-cli`, a console client that runs WinSCP
-  scripts.
+- Automate all of this with `linscp-cli`, a console client for scripts that
+  use the same language as WinSCP scripts.
 
 ## Protocols
 
@@ -53,10 +53,13 @@ linscp runs on 64-bit Linux and on Windows 10 and 11 (x64). Every release so
 far is a pre-release: the core is mature, but the interface around it is new.
 Back up your settings before you try it on a setup you depend on.
 
-linscp is free software under the GNU GPL, version 3. It is an independent
-project: the WinSCP authors do not make, endorse or support it. To learn what
-it shares with WinSCP and where it differs, read
-[linscp and WinSCP](../linscp-and-winscp/).
+linscp is free software under the GNU GPL, version 3, created and maintained by
+[Eduardo Correia](https://github.com/99ecarvalho). It is a young, independent
+project funded by its users; see [support linscp](../../../donate/).
+
+Its transfer engine comes from WinSCP, with thanks; the WinSCP authors are not
+involved in linscp. [linscp and WinSCP](../linscp-and-winscp/) lists what the
+two share and where they differ.
 
 ## Next steps
 

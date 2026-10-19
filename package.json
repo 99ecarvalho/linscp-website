@@ -9,7 +9,8 @@
     "dev": "npm run gen && astro dev",
     "build": "npm run gen && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync:screenshots": "node scripts/sync-screenshots.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.6",

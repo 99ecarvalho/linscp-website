@@ -4,9 +4,14 @@ description: How to install linscp, connect to servers, move and sync files, aut
 eyebrow: Manual
 ---
 
-linscp is a file transfer client for Linux and Windows, built on WinSCP's
-core with a Qt interface. This manual explains how to install it, connect to
-servers, work with remote files and automate transfers with `linscp-cli`.
+linscp is a file transfer client for Linux and Windows, created and maintained
+by [Eduardo Correia](https://github.com/99ecarvalho). This manual explains how
+to install it, connect to servers, work with remote files and automate transfers
+with `linscp-cli`.
+
+:::tip[linscp is new and community-funded]
+If it saves you time, [support its development](../donate/).
+:::
 
 :::note[Latest version only]
 The manual describes the newest linscp release. For an older version, read

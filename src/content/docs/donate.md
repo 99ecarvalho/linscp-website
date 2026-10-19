@@ -1,23 +1,33 @@
 ---
-title: Donate
-description: linscp is free. Donations pay for build machines, test servers and time.
-template: splash
-tableOfContents: false
+title: Support linscp
+description: linscp is new, free and made by one person. Your support decides how fast it grows.
 eyebrow: Support the project
+tableOfContents: false
 ---
 
-linscp costs nothing and has no ads in the program. If it saves you time, you can
-help keep it going.
+linscp is free and open source, with no ads and no paid edition. It is a young
+project, created and maintained by [Eduardo Correia](https://github.com/99ecarvalho)
+as an independent effort. Every sponsor makes the next release come sooner.
 
-## Ways to give
+<a class="ls-button" href="https://github.com/sponsors/99ecarvalho">Sponsor linscp on GitHub</a>
 
-- **GitHub Sponsors**: monthly or one-off. *(link to be added)*
-- **Support WinSCP too.** linscp runs WinSCP's core, so the
-  [WinSCP project](https://winscp.net/eng/donate.php) deserves a share.
+Monthly or one-time, any amount helps.
+
+## What your support pays for
+
+- **Code signing for Windows**, so the installer stops triggering SmartScreen
+  warnings.
+- **Test machines and servers** for every distribution, protocol and server type
+  linscp supports.
+- **Time.** Fixing bugs, reviewing translations, writing this manual and keeping
+  up with each new release of the components linscp is built on.
 
 ## Other ways to help
 
-- Report bugs with clear steps and logs.
-- Test pre-releases on your distribution.
-- Translate the interface texts that are new in linscp.
-- Improve this site: every page has an **Edit page** link.
+- **Tell people.** Star the [repository](https://github.com/99ecarvalho/linscp),
+  write about linscp, recommend it to a colleague.
+- **Report bugs** with clear steps and a log. See
+  [reporting bugs](../manual/troubleshooting/reporting-bugs/).
+- **Test pre-releases** on your distribution and say what broke.
+- **Translate** the interface texts that are new in linscp.
+- **Improve the manual**: see [contributing](../manual/developers/contributing/).

@@ -90,7 +90,6 @@ function validate(s, t) {
 const yamlStr = (s) => JSON.stringify(String(s));
 const header = (fm) =>
 	'---\n' +
-	'editUrl: false\n' +
 	Object.entries(fm)
 		.map(([k, v]) => (typeof v === 'object' ? `${k}:\n${Object.entries(v).map(([a, b]) => `  ${a}: ${b}`).join('\n')}` : `${k}: ${v}`))
 		.join('\n') +

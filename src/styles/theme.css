@@ -150,6 +150,8 @@
 }
 :root[data-theme='dark'] .ls-button { background: var(--ls-blue); border-color: var(--ls-blue); color: #08111f; }
 .ls-button:hover { filter: brightness(1.1); }
+.sl-markdown-content a.ls-button { color: #fff; text-decoration: none; margin-block: 0.5rem; }
+:root[data-theme='dark'] .sl-markdown-content a.ls-button { color: #08111f; }
 .ls-button.secondary { background: transparent; color: var(--ls-deep); }
 
 /* Square corners everywhere. */
