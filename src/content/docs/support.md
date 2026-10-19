@@ -32,12 +32,18 @@ linscp is not WinSCP. Please report linscp problems here, not on the WinSCP foru
 
 ## Report a security problem
 
-Do not open a public issue. Follow the
-[security page](../manual/security/reporting-vulnerabilities/) to report
-it privately.
+Do not open a public issue. Report it privately on GitHub or to
+[security@linscp.org](mailto:security@linscp.org); the
+[security page](../security/) explains how.
 
 ## Help with translations
 
 linscp uses WinSCP's translations. Interface texts that are new in linscp still
 need translators; see the project's
 [contributing notes](https://github.com/99ecarvalho/linscp).
+
+## Contact the maintainer
+
+For anything that is not a bug or a security report (press, partnerships,
+packaging for a distribution, sponsorship), write to Eduardo Correia at
+[eduardo@linscp.org](mailto:eduardo@linscp.org).

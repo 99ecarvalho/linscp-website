@@ -31,3 +31,8 @@ Monthly or one-time, any amount helps.
 - **Test pre-releases** on your distribution and say what broke.
 - **Translate** the interface texts that are new in linscp.
 - **Improve the manual**: see [contributing](../manual/developers/contributing/).
+
+## Sponsoring as a company
+
+If your company relies on linscp and wants to sponsor it, or needs an invoice,
+write to [eduardo@linscp.org](mailto:eduardo@linscp.org).

@@ -2,6 +2,8 @@
 
 export const AUTHOR = 'Eduardo Correia';
 export const AUTHOR_URL = 'https://github.com/99ecarvalho';
+export const CONTACT_EMAIL = 'eduardo@linscp.org';
+export const SECURITY_EMAIL = 'security@linscp.org';
 export const SPONSOR_URL = 'https://github.com/sponsors/99ecarvalho';
 
 export interface NavItem {
@@ -18,6 +20,7 @@ export const nav: NavItem[] = [
 	{ label: 'News', href: '/news/', match: '/news/' },
 	{ label: 'Support', href: '/support/' },
 	{ label: 'Donate', href: '/donate/' },
+	{ label: 'Security', href: '/security/' },
 	{ label: 'Source code', href: 'https://github.com/99ecarvalho/linscp', external: true },
 ];
 

@@ -4,7 +4,7 @@
 import { getEntry } from 'astro:content';
 import Pagination from 'virtual:starlight/components/Pagination';
 import logo from '../assets/linscp.svg';
-import { href, AUTHOR, AUTHOR_URL } from '../lib/site';
+import { href, AUTHOR, AUTHOR_URL, CONTACT_EMAIL } from '../lib/site';
 
 const route = Astro.locals.starlightRoute;
 const { data } = route.entry;
@@ -76,7 +76,8 @@ const year = new Date().getFullYear();
 		<a href={href('/manual/')}>Manual</a>
 		<a href={href('/support/')}>Support</a>
 		<a href={href('/donate/')}>Donate</a>
-		<a href={href("/manual/security/reporting-vulnerabilities/")}>Security</a>
+		<a href={href('/security/')}>Security</a>
+		<a href={`mailto:${CONTACT_EMAIL}`}>Contact</a>
 		<a href={href('/manual/about/license-and-credits/')}>Credits</a>
 		<a href="https://github.com/99ecarvalho/linscp-website">Site source</a>
 	</nav>
