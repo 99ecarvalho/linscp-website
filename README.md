@@ -2,7 +2,7 @@
 
 Source of the [linscp](https://github.com/99ecarvalho/linscp) website and manual,
 built with [Astro Starlight](https://starlight.astro.build/) and published on GitHub Pages:
-<https://99ecarvalho.github.io/linscp-website/>
+<https://linscp.org/>
 
 ## Work on it
 
@@ -10,7 +10,7 @@ Needs Node.js 22.22 or newer.
 
 ```sh
 npm install
-npm run dev        # http://localhost:4321/linscp-website/
+npm run dev        # http://localhost:4321/
 npm run build      # static site in dist/
 ```
 

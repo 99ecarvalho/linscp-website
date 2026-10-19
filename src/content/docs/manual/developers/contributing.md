@@ -89,7 +89,7 @@ The site is built with Astro Starlight. You need Node.js 22.22 or newer.
 git clone https://github.com/99ecarvalho/linscp-website
 cd linscp-website
 npm install
-npm run dev        # http://localhost:4321/linscp-website/
+npm run dev        # http://localhost:4321/
 ```
 
 Manual pages are Markdown files in `src/content/docs/manual/`, one folder per
