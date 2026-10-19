@@ -73,5 +73,13 @@ parts listed above stays with their authors.
 
 ## Website and manual
 
-The code of this website is under GPL-3.0-or-later, like linscp. The licence
-for the manual text has not been chosen yet.
+The text of this manual and of the website is under the
+[Creative Commons Attribution-ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+licence (CC BY-SA 4.0). You may copy, adapt and republish it, also commercially,
+as long as you credit linscp, link to the licence and share your changes under
+the same terms.
+
+The code that builds the website (components, theme and scripts) is under
+GPL-3.0-or-later, like linscp. Both licence texts are in the
+[website repository](https://github.com/99ecarvalho/linscp-website): `LICENSE`
+for the code, `LICENSE-docs` for the text.

@@ -74,18 +74,10 @@ your computer run something. From an untrusted URL it ignores:
 - the local proxy command and the Telnet proxy command;
 - the remote recycle bin settings, FTP **Post login commands** and the
   **Return code variable**;
-- custom GSSAPI library settings;
-- the **PuTTY terminal settings**;
 - permission for WebDAV redirects to other hosts or to plain HTTP.
 
-The same run also refuses `/ini`, `/rawconfig`, `/defaults` and the logging
-switches, and `linscp-cli` runs no script commands.
-
-:::note[Differs from WinSCP]
-WinSCP already ignores most of this list. linscp also drops the custom
-GSSAPI library path and the PuTTY terminal settings, which WinSCP still
-accepts from a URL.
-:::
+The same run also refuses switches that would change your configuration, and
+`linscp-cli` runs no script commands.
 
 When you paste or type a URL whose `x-` settings include any of these, linscp
 asks before using them. Answer **Cancel** unless you trust where the URL came

@@ -81,7 +81,7 @@ const year = new Date().getFullYear();
 		<a href={href("/manual/security/reporting-vulnerabilities/")}>Security</a>
 		<a href="https://github.com/99ecarvalho/linscp-website">Site source</a>
 	</nav>
-	<span class="ls-copy">© {year} linscp contributors</span>
+	<span class="ls-copy">© {year} linscp contributors · Text under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA 4.0</a> · Site code under GPL 3</span>
 </footer>
 
 <style>
@@ -158,6 +158,7 @@ const year = new Date().getFullYear();
 	}
 	.ls-foot-links a { color: var(--ls-deep); text-decoration: none; padding: 0.4rem 0; }
 	.ls-foot-links a:hover { text-decoration: underline; }
+	.ls-copy a { color: inherit; }
 	.ls-copy {
 		width: 100%;
 		font: 0.5625rem var(--ls-mono);

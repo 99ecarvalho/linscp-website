@@ -145,3 +145,9 @@ the other way round. The program's own help text is never published: it is
 WinSCP's wording, so only the names are taken from it.
 
 Every push to `main` deploys the site to GitHub Pages.
+
+## Licence of contributions
+
+Manual and site text is published under CC BY-SA 4.0, and the website's code
+under GPL-3.0-or-later. By sending a change you agree to license it under those
+terms. See [licence and credits](../../about/license-and-credits/).

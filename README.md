@@ -47,4 +47,7 @@ newest release.
 
 ## Licence
 
-Site code: GPL-3.0-or-later, like linscp. Manual text: to be decided.
+- Text of the manual and site pages (`src/content/`, `src/data/cli.yaml`): [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), see `LICENSE-docs`.
+- Code (components, theme, scripts, config): GPL-3.0-or-later, see `LICENSE`.
+
+By contributing you agree to license your text and code under these terms.

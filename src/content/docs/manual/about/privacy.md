@@ -51,7 +51,7 @@ period in WinSCP, linscp uses that period too, but it still asks only GitHub.
   changes.
 - **History**: recent paths, commands and search terms, to fill drop-down
   lists.
-- **Temporary copies** of files you open for editing, in a private folder.
+- **Temporary copies** of files you open for editing, in a temporary folder.
   linscp removes them when you finish editing; the **Storage** page of the
   preferences controls the cleanup of leftovers.
 - **Logs**, only if you turn on logging under **Options › Preferences ›

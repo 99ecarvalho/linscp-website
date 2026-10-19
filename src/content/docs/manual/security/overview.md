@@ -75,7 +75,7 @@ reach the server, so the server's administrator cannot read them. See
 
 A `sftp://` or `ftp://` link opened from a browser or another program is
 treated as untrusted. linscp ignores the settings in it that could run
-commands or replace your configuration. This is stricter than WinSCP. See
+commands or replace your configuration. See
 [session URLs](../../connecting/session-urls/).
 
 ## Logs

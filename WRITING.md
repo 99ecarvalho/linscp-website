@@ -15,6 +15,12 @@ Before you commit, run the overlap check (it flags any 8-word run shared with
 those sources). Fix every hit that is not a fixed technical phrase, such as a
 command line or a protocol name.
 
+## Licence
+
+Everything you write here is published under CC BY-SA 4.0 (`LICENSE-docs`).
+That is one more reason the text must be your own: you can only license what
+you wrote.
+
 ## Voice
 
 - Concise. One idea per sentence. Cut what the reader does not need to act.
