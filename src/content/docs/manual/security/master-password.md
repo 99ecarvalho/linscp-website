@@ -49,8 +49,9 @@ quit. If you cancel the prompt, the saved password stays locked and you
 type the server password yourself.
 
 :::note
-`linscp-cli` cannot unlock passwords protected by a master password. For
-scripts, pass credentials as described in
+`linscp-cli` asks for the master password on the terminal when a script opens
+a site whose password it protects. Unattended scripts cannot answer that
+prompt, so pass their credentials as described in
 [sessions and credentials](../../scripting/sessions-and-credentials/).
 :::
 

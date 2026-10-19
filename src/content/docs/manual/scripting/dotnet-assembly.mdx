@@ -39,11 +39,21 @@ from. The assembly checks this when it starts.
   </TabItem>
   <TabItem label="Linux">
 
-No Linux package ships the assembly yet. WinSCP's published assembly cannot
-run on Linux: it talks to the console client through Windows-only named
-objects. linscp carries a small change that uses inherited pipes instead,
-offered to WinSCP upstream. Build the assembly with that change from the
-root of the linscp source tree, with a .NET SDK installed:
+The Linux packages include a `dotnet` folder in linscp's program directory.
+It holds `WinSCPnet.dll` (.NET Standard 2.0) and a link named `WinSCP.exe`
+that points to `linscp-cli`, so code that loads the assembly from there works
+without further setup. To find the folder on a `.deb` install:
+
+```sh
+dpkg -L linscp | grep '/dotnet/'
+```
+
+WinSCP's own published assembly cannot run on Linux: it talks to the console
+client through Windows-only named objects. linscp's copy carries a small
+change that uses inherited pipes instead, offered to WinSCP upstream.
+
+To build the assembly yourself, run this from the root of the linscp source
+tree, with a .NET SDK installed:
 
 ```sh
 python3 port/tools/build_winscpnet.py --dotnet "$(command -v dotnet)" \

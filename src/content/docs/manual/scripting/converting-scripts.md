@@ -23,8 +23,8 @@ changes:
 - Turn `.bat` wrappers into shell scripts. `%ERRORLEVEL%` becomes `$?`, and
   `%%TIMESTAMP...%%` in a batch file becomes `%TIMESTAMP...%` inside single
   quotes in the shell.
-- `%WINSCP_PATH%` is not set for scripts run by linscp-cli. Use a path of
-  your own.
+- `%WINSCP_PATH%` expands to the folder that holds `linscp-cli`, as it does
+  for WinSCP.
 - To reuse your stored sites and host keys, export the configuration from
   WinSCP to an INI file and use it as `~/.config/linscp/WinSCP.ini`, or pass
   it with `/ini=`. See [raw configuration](../raw-configuration/).

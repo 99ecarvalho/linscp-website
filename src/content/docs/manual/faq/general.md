@@ -76,11 +76,6 @@ when on, only asks GitHub for the newest release. See
 No. linscp transfers files but does not mount servers. On Linux, tools such
 as `sshfs`, `rclone mount` or your file manager's network locations do that.
 
-### Why does Help › Contents open WinSCP's site?
-
-The built-in help link still points to WinSCP's documentation, which this
-manual is replacing. For linscp's own behaviour, use this manual.
-
 ### Can I use linscp in my language?
 
 Yes. linscp comes with WinSCP's translations; pick one under
