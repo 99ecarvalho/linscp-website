@@ -58,6 +58,8 @@ saved site. The **URL** tab builds the address; check what it should carry:
 tabs give the same connection as a script for `linscp-cli` or as code for the
 .NET assembly. **Copy to Clipboard** takes the result.
 
+![The Generate Session URL/Code dialog on its URL tab, with Username and Initial directory checked](../../../../assets/screenshots/generate-url.png)
+
 ## Opening links from a browser
 
 The linscp desktop entry registers it for `sftp:`, `scp:`, `ftp:`, `ftps:`,

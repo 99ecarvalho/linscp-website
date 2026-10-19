@@ -1,6 +1,6 @@
 {
 	"source": "linscp-cli",
-	"version": "6.7.1",
+	"version": "0.6.1",
 	"switches": [
 		"/privatekey",
 		"/hostkey",
@@ -30,6 +30,8 @@
 		"/rawconfig",
 		"/batchsettings",
 		"/copyid",
+		"/identity",
+		"/fingerprintscan",
 		"/info",
 		"/help"
 	],

@@ -1,6 +1,33 @@
 {
-	"commander.png": { "caption": "Commander layout", "alt": "linscp's Commander layout: local files on the left, the server on the right.", "order": 1, "hero": true },
-	"explorer.png": { "caption": "Explorer layout", "alt": "The Explorer layout with a folder tree beside the remote files.", "order": 2 },
-	"site-manager.png": { "caption": "Site Manager", "alt": "The Site Manager with saved connections.", "order": 3 },
-	"preferences.png": { "caption": "Preferences", "alt": "The Preferences window, Panels page.", "order": 4 }
+	"commander.png": {
+		"caption": "Commander layout",
+		"alt": "linscp's Commander layout: local files on the left, the server on the right.",
+		"order": 1,
+		"hero": true
+	},
+	"explorer.png": {
+		"caption": "Explorer layout",
+		"alt": "The Explorer layout with a folder tree beside the remote files.",
+		"order": 2
+	},
+	"site-manager.png": {
+		"caption": "Site Manager",
+		"alt": "The Site Manager with saved connections.",
+		"order": 3
+	},
+	"preferences.png": {
+		"caption": "Preferences",
+		"alt": "The Preferences window, Panels page.",
+		"order": 5
+	},
+	"generate-url.png": {
+		"caption": "Session URLs and script code",
+		"alt": "The Generate Session URL/Code dialog, building an sftp:// address for the current session.",
+		"order": 4
+	},
+	"preferences-transfer.png": {
+		"caption": "Transfer presets",
+		"alt": "Preferences, Transfer page: the default settings and the built-in transfer presets.",
+		"order": 6
+	}
 }

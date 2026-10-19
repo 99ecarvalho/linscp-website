@@ -69,6 +69,8 @@ downloaded files.
 Manage presets in **Options › Preferences › Transfer**. The first entry is
 the default settings; the others are presets.
 
+![The Transfer page of Preferences, listing the Default settings and the Text, Binary, New and updated files only and Exclude directories presets](../../../../assets/screenshots/preferences-transfer.png)
+
 1. Click **Add...**, or select a preset and click **Duplicate...**.
 2. Enter a **Preset description**, for example *Website upload*.
 3. Change the settings and click **OK**.

@@ -36,7 +36,8 @@ function run(bin, argv, input) {
 function refresh() {
 	const bin = process.env.LINSCP_CLI;
 	if (!bin) throw new Error('set LINSCP_CLI to the linscp-cli binary');
-	const version = (run(bin, ['/help']).match(/Version\s+([\w.]+)/) ?? [])[1] ?? 'unknown';
+	const banner = run(bin, ['/help']);
+	const version = (banner.match(/^linscp\s+([\d.]+)/m) ?? banner.match(/Version\s+([\w.]+)/) ?? [])[1] ?? 'unknown';
 
 	const usage = run(bin, ['/help']);
 	const switches = [...usage.matchAll(/^ {2}(\/[a-z]+)=?\s/gm)].map((m) => m[1]);

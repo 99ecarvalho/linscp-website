@@ -40,6 +40,8 @@ switchSyntax:
   /rawconfig: '/rawconfig <name>=<value>...'
   /batchsettings: '/batchsettings <site-mask> <name>=<value>...'
   /copyid: '/copyid /identity=<key-file> <site>'
+  /identity: '/identity=<key-file>'
+  /fingerprintscan: '/fingerprintscan <site>'
 
 switches:
   /privatekey: SSH private key to authenticate with when connecting to the session given on the command line.
@@ -70,6 +72,8 @@ switches:
   /rawconfig: Set any application setting by its raw name. linscp-cli saves its configuration when it exits, so the value stays.
   /batchsettings: Change raw settings on every saved site whose name matches the mask, then save the sites. Prints which sites changed.
   /copyid: Add the public half of a key to `~/.ssh/authorized_keys` on the server, like `ssh-copy-id`. Needs `/identity` and a site.
+  /identity: With `/copyid`, the key file whose public key gets installed. `-i` works too, as with `ssh-copy-id`.
+  /fingerprintscan: Connect to an SSH or FTPS server only long enough to print its host key or certificate fingerprints (SHA-256, SHA-1, MD5), without checking them. Compare the result with a value you trust before you rely on it.
   /info: Print the SSH and TLS libraries linscp uses and the ciphers, key exchanges, host key types and MACs they offer, then exit.
   /help: Show a short usage summary and exit.
 
