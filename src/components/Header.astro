@@ -1,0 +1,162 @@
+---
+import Search from 'virtual:starlight/components/Search';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+import logo from '../assets/linscp.svg';
+import { getRelease } from '../lib/release';
+import { nav, href, isActive } from '../lib/site';
+
+const release = await getRelease();
+const path = Astro.url.pathname;
+---
+
+<div class="ls-header">
+	<div class="ls-bar">
+		<a class="ls-brand" href={href('/')} aria-label="linscp home">
+			<img src={logo.src} alt="" width="36" height="36" />
+			<span class="ls-word" translate="no">linscp</span>
+			<span class="ls-tagline">Secure file transfer for Linux and Windows</span>
+		</a>
+		<div class="ls-search print:hidden"><Search /></div>
+		<div class="ls-tools sl-hidden md:sl-flex print:hidden">
+			<SocialIcons />
+			<ThemeSelect />
+		</div>
+	</div>
+	<nav class="ls-menu print:hidden" aria-label="Main">
+		<div class="ls-menu-inner">
+			{
+				nav.map((item) => (
+					<a
+						class:list={['ls-link', { external: item.external }]}
+						href={item.external ? item.href : href(item.href)}
+						aria-current={isActive(path, item) ? 'page' : undefined}
+					>
+						{item.label}
+						{item.external && <span aria-hidden="true"> ↗</span>}
+					</a>
+				))
+			}
+			<a class="ls-version" href={release.url} title={`Newest release: ${release.tag}`}>
+				v{release.version}
+				<span class="ls-dot" aria-hidden="true"></span>
+			</a>
+		</div>
+	</nav>
+</div>
+
+<style>
+	.ls-header {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+	.ls-bar {
+		height: var(--ls-bar-h);
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		padding-inline: var(--sl-nav-pad-x);
+		background: var(--ls-paper);
+		border-bottom: 1px solid var(--ls-line);
+	}
+	:global([data-has-sidebar]) .ls-bar {
+		padding-inline-end: calc(var(--sl-nav-gap) + var(--sl-nav-pad-x) + var(--sl-menu-button-size));
+	}
+	.ls-brand {
+		display: grid;
+		grid-template-columns: auto auto;
+		grid-template-rows: auto auto;
+		column-gap: 0.65rem;
+		align-items: center;
+		text-decoration: none;
+		min-width: 0;
+	}
+	.ls-brand img {
+		grid-row: 1 / 3;
+		width: 2.25rem;
+		height: 2.25rem;
+	}
+	.ls-word {
+		font: 800 1.5rem/1 var(--ls-font);
+		letter-spacing: -0.04em;
+		color: var(--sl-color-white);
+	}
+	.ls-tagline {
+		font-size: 0.6875rem;
+		letter-spacing: 0.04em;
+		color: var(--ls-muted);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.ls-search {
+		flex: 1;
+		display: flex;
+		justify-content: center;
+	}
+	.ls-tools {
+		gap: 1rem;
+		align-items: center;
+	}
+
+	.ls-menu {
+		height: var(--ls-menu-h);
+		background: var(--ls-ink);
+		color: var(--ls-nav-text);
+	}
+	.ls-menu-inner {
+		height: 100%;
+		display: flex;
+		align-items: stretch;
+		gap: 1.9rem;
+		padding-inline: var(--sl-nav-pad-x);
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+	.ls-link {
+		position: relative;
+		display: flex;
+		align-items: center;
+		white-space: nowrap;
+		font-size: 0.8125rem;
+		font-weight: 600;
+		color: var(--ls-nav-text);
+		text-decoration: none;
+	}
+	.ls-link:hover { color: var(--ls-blue); }
+	.ls-link[aria-current='page']::after {
+		content: '';
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 3px;
+		background: var(--ls-blue);
+	}
+	.ls-link.external span { font-size: 0.75em; }
+	.ls-version {
+		margin-inline-start: auto;
+		display: flex;
+		align-items: center;
+		gap: 0.7rem;
+		font: 0.6875rem var(--ls-mono);
+		color: var(--ls-nav-dim);
+		text-decoration: none;
+		white-space: nowrap;
+	}
+	.ls-version:hover { color: #fff; }
+	.ls-dot {
+		width: 6px;
+		height: 6px;
+		background: var(--ls-amber);
+	}
+
+	@media (max-width: 50rem) {
+		.ls-tagline { display: none; }
+		.ls-brand img { width: 1.75rem; height: 1.75rem; }
+		.ls-word { font-size: 1.25rem; }
+		.ls-search { justify-content: flex-end; }
+		.ls-menu-inner { gap: 1.25rem; }
+		.ls-link { font-size: 0.75rem; }
+		.ls-version { display: none; }
+	}
+</style>

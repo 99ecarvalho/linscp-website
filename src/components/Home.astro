@@ -1,0 +1,229 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import commander from '../assets/screenshots/commander.png';
+import explorer from '../assets/screenshots/explorer.png';
+import siteManager from '../assets/screenshots/site-manager.png';
+import { getRelease, formatDate, RELEASES_URL } from '../lib/release';
+import { href } from '../lib/site';
+
+const release = await getRelease();
+const news = (await getCollection('docs', (e) => e.id.startsWith('news/') && e.data.date))
+	.sort((a, b) => +b.data.date! - +a.data.date!)
+	.slice(0, 3);
+
+const features = [
+	{ k: 'Protocols', t: 'Five protocols, one window', d: 'SFTP, SCP, FTP with TLS, WebDAV and Amazon S3 compatible storage.' },
+	{ k: 'Layouts', t: 'Two panels or one', d: 'Commander shows local and remote side by side. Explorer shows just the server, with a folder tree.' },
+	{ k: 'Sync', t: 'Keep folders in step', d: 'Compare a local and a remote folder, preview the differences, then apply them in either direction.' },
+	{ k: 'Edit', t: 'Edit files in place', d: 'Open a remote file in the built-in editor or your own; linscp uploads it every time you save.' },
+	{ k: 'Automate', t: 'Script everything', d: 'linscp-cli runs the same transfers from a terminal, a script file or a cron job.' },
+	{ k: 'Security', t: 'Keys and host checks', d: 'SSH key login, host key checks, TLS certificates and an optional master password for saved passwords.' },
+];
+---
+
+<div class="ls-home not-content">
+	<section class="ls-hero">
+		<div class="ls-hero-text">
+			<p class="ls-eyebrow">Free and open source · GPL 3</p>
+			<h1>Move files to any server, from Linux or Windows.</h1>
+			<p class="ls-lede">
+				linscp is a graphical file manager for SFTP, SCP, FTP, WebDAV and S3. It runs the protocol engine
+				proven in WinSCP inside a new Qt interface, so the same program works on both systems.
+			</p>
+			<div class="ls-hero-actions">
+				<a class="ls-button" href={href('/download/')}>Download linscp {release.version}</a>
+				<a class="ls-button secondary" href={href('/manual/')}>Read the manual</a>
+			</div>
+			<p class="ls-hero-meta">
+				{release.prerelease ? 'Pre-release' : 'Release'} · {formatDate(release.date)} ·{' '}
+				<a href={release.url}>What changed</a> ·{' '}<a href={RELEASES_URL}>Older versions</a>
+			</p>
+		</div>
+		<figure class="ls-hero-shot">
+			<Image src={commander} alt="linscp's Commander layout: local files on the left, the server on the right." widths={[600, 1200]} sizes="(max-width: 60rem) 100vw, 40rem" loading="eager" />
+		</figure>
+	</section>
+
+	<section class="ls-features" aria-labelledby="features">
+		<p class="ls-eyebrow">What it does</p>
+		<h2 id="features">Everything you expect from a file transfer client</h2>
+		<div class="ls-feature-grid">
+			{
+				features.map((f) => (
+					<article>
+						<p class="ls-eyebrow">{f.k}</p>
+						<h3>{f.t}</h3>
+						<p>{f.d}</p>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="ls-shots" aria-labelledby="shots">
+		<p class="ls-eyebrow">A closer look</p>
+		<h2 id="shots">Screenshots</h2>
+		<div class="ls-shot-grid">
+			<figure>
+				<Image src={explorer} alt="The Explorer layout with a folder tree beside the remote files." widths={[480, 960]} sizes="(max-width: 60rem) 100vw, 24rem" />
+				<figcaption>Explorer layout</figcaption>
+			</figure>
+			<figure>
+				<Image src={siteManager} alt="The Site Manager with saved connections." widths={[480, 960]} sizes="(max-width: 60rem) 100vw, 24rem" />
+				<figcaption>Site Manager</figcaption>
+			</figure>
+		</div>
+	</section>
+
+	{
+		news.length > 0 && (
+			<section class="ls-news" aria-labelledby="latest">
+				<div class="ls-news-head">
+					<h2 id="latest">The latest</h2>
+					<a class="ls-cta" href={href('/news/')}>All news</a>
+				</div>
+				<ul>
+					{news.map((n) => (
+						<li>
+							<p class="ls-eyebrow">
+								<time datetime={n.data.date!.toISOString()}>{formatDate(n.data.date!.toISOString())}</time>
+							</p>
+							<a href={href(`/${n.id}/`)}>{n.data.title}</a>
+							{n.data.description && <p>{n.data.description}</p>}
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	<section class="ls-context">
+		<p class="ls-eyebrow">About the project</p>
+		<h2>The WinSCP core, at home on Linux.</h2>
+		<p>
+			WinSCP has been a trusted Windows client for over twenty years, but its interface only builds on
+			Windows. linscp keeps WinSCP's core unchanged and replaces the interface, so improvements made upstream
+			can keep flowing in. It is an independent project, not affiliated with WinSCP.
+		</p>
+		<a class="ls-cta" href={href('/manual/')}>How linscp relates to WinSCP</a>
+	</section>
+</div>
+
+<style>
+	.ls-home { padding-block: 1rem 0; }
+	.ls-home h2 {
+		font-size: 1.75rem;
+		font-weight: 750;
+		letter-spacing: -0.03em;
+		color: var(--sl-color-white);
+		margin: 0 0 1.5rem;
+	}
+	.ls-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+		gap: 3rem;
+		align-items: center;
+		padding-bottom: 3rem;
+		border-bottom: 1px solid var(--ls-line);
+	}
+	.ls-hero h1 {
+		margin: 0;
+		font-size: clamp(2.1rem, 4vw, 3rem);
+		line-height: 1.08;
+		font-weight: 800;
+		letter-spacing: -0.04em;
+		color: var(--sl-color-white);
+	}
+	.ls-lede {
+		margin: 1.2rem 0 0;
+		font-size: 1.0625rem;
+		line-height: 1.7;
+		color: var(--ls-muted);
+	}
+	.ls-hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.75rem;
+	}
+	.ls-hero-meta {
+		margin: 1rem 0 0;
+		font-size: 0.75rem;
+		color: var(--ls-muted);
+	}
+	.ls-hero-meta a { color: var(--ls-deep); }
+	.ls-hero-shot { margin: 0; border: 1px solid var(--ls-line); box-shadow: 0 18px 40px -24px rgb(20 40 80 / 0.35); }
+	.ls-hero-shot :global(img) { display: block; width: 100%; height: auto; }
+
+	.ls-features,
+	.ls-shots,
+	.ls-news,
+	.ls-context { padding-block: 3rem; border-bottom: 1px solid var(--ls-line); }
+	.ls-feature-grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		border-top: 1px solid var(--ls-line);
+		border-left: 1px solid var(--ls-line);
+	}
+	.ls-feature-grid article {
+		padding: 1.3rem 1.4rem 1.5rem;
+		border-right: 1px solid var(--ls-line);
+		border-bottom: 1px solid var(--ls-line);
+	}
+	.ls-feature-grid h3 {
+		margin: 0 0 0.4rem;
+		font-size: 1.0625rem;
+		font-weight: 700;
+		color: var(--sl-color-white);
+	}
+	.ls-feature-grid p:not(.ls-eyebrow) {
+		margin: 0;
+		font-size: 0.875rem;
+		line-height: 1.65;
+		color: var(--ls-muted);
+	}
+	.ls-shot-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem;
+	}
+	.ls-shot-grid figure { margin: 0; }
+	.ls-shot-grid :global(img) { display: block; width: 100%; height: auto; border: 1px solid var(--ls-line); }
+	.ls-shot-grid figcaption {
+		margin-top: 0.5rem;
+		font: 0.6875rem var(--ls-mono);
+		color: var(--ls-muted);
+	}
+	.ls-news-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		border-bottom: 2px solid var(--sl-color-white);
+		margin-bottom: 0.5rem;
+	}
+	.ls-news-head h2 { margin-bottom: 0.75rem; }
+	.ls-news ul { list-style: none; margin: 0; padding: 0; }
+	.ls-news li { padding: 1.2rem 0; border-bottom: 1px solid var(--ls-line); }
+	.ls-news li .ls-eyebrow { margin-bottom: 0.3rem; }
+	.ls-news li a {
+		font-size: 1.25rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--sl-color-white);
+		text-decoration: none;
+	}
+	.ls-news li a:hover { color: var(--ls-deep); }
+	.ls-news li p:not(.ls-eyebrow) { margin: 0.35rem 0 0; font-size: 0.875rem; color: var(--ls-muted); }
+	.ls-context { border-bottom: 0; max-width: 42rem; }
+	.ls-context p:not(.ls-eyebrow) { color: var(--ls-muted); line-height: 1.75; font-size: 0.9375rem; }
+
+	@media (max-width: 60rem) {
+		.ls-hero { grid-template-columns: 1fr; gap: 2rem; }
+		.ls-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
+	@media (max-width: 40rem) {
+		.ls-feature-grid,
+		.ls-shot-grid { grid-template-columns: 1fr; }
+	}
+</style>

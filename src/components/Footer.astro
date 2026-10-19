@@ -1,0 +1,169 @@
+---
+// Under every page: optional "Further reading" and "Keep exploring" blocks,
+// Starlight's edit link and pagination, then the site footer.
+import { getEntry } from 'astro:content';
+import EditLink from 'virtual:starlight/components/EditLink';
+import Pagination from 'virtual:starlight/components/Pagination';
+import logo from '../assets/linscp.svg';
+import { href } from '../lib/site';
+
+const route = Astro.locals.starlightRoute;
+const { data } = route.entry;
+const isSplash = data.template === 'splash';
+
+const related = (
+	await Promise.all(
+		(data.related ?? []).map(async (id) => {
+			const e = await getEntry('docs', id);
+			if (!e) throw new Error(`related: no page "${id}" (in ${route.id})`);
+			return { title: e.data.title, url: href(`/${e.id}/`) };
+		}),
+	)
+).filter(Boolean);
+const year = new Date().getFullYear();
+---
+
+{
+	!isSplash && data.sources && data.sources.length > 0 && (
+		<section class="ls-sources" aria-labelledby="further-reading">
+			<p class="ls-eyebrow">Go deeper</p>
+			<h2 id="further-reading">Further reading</h2>
+			<ol>
+				{data.sources.map((s) => (
+					<li>
+						<a href={s.href}>
+							{s.label}
+							<span aria-hidden="true"> ↗</span>
+						</a>
+					</li>
+				))}
+			</ol>
+		</section>
+	)
+}
+{
+	!isSplash && related.length > 0 && (
+		<section class="ls-related" aria-labelledby="keep-exploring">
+			<h2 id="keep-exploring">Keep exploring</h2>
+			<ul>
+				{related.map((r) => (
+					<li>
+						<a href={r.url}>
+							<span>{r.title}</span>
+							<span aria-hidden="true">↗</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</section>
+	)
+}
+{
+	!isSplash && (
+		<div class="ls-page-tools print:hidden">
+			<EditLink />
+			<Pagination />
+		</div>
+	)
+}
+
+<footer class="ls-footer">
+	<a class="ls-foot-brand" href={href('/')} aria-label="linscp home">
+		<img src={logo.src} alt="" width="22" height="22" />
+		<span translate="no">linscp</span>
+	</a>
+	<p>Free software under the GPL&nbsp;3. Built on the WinSCP core; not affiliated with the WinSCP project.</p>
+	<nav class="ls-foot-links" aria-label="Site information">
+		<a href={href('/download/')}>Download</a>
+		<a href={href('/manual/')}>Manual</a>
+		<a href={href('/support/')}>Support</a>
+		<a href={href('/donate/')}>Donate</a>
+		<a href={href("/manual/security/reporting-vulnerabilities/")}>Security</a>
+		<a href="https://github.com/99ecarvalho/linscp-website">Site source</a>
+	</nav>
+	<span class="ls-copy">© {year} linscp contributors</span>
+</footer>
+
+<style>
+	.ls-sources,
+	.ls-related {
+		margin-top: 3rem;
+		padding-top: 1.75rem;
+		border-top: 1px solid var(--ls-line);
+	}
+	.ls-related { border-top: 0; padding-top: 0; }
+	h2 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--sl-color-white);
+		margin: 0 0 1rem;
+	}
+	.ls-sources ol {
+		margin: 0;
+		padding-inline-start: 1.4rem;
+		font-size: 0.8125rem;
+	}
+	.ls-sources li + li { margin-top: 0.45rem; }
+	.ls-sources a,
+	.ls-related a { color: var(--ls-deep); }
+	.ls-related ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid var(--ls-line);
+	}
+	.ls-related a {
+		display: flex;
+		justify-content: space-between;
+		padding: 0.8rem 0;
+		border-bottom: 1px solid var(--ls-line);
+		font-size: 0.8125rem;
+		text-decoration: none;
+	}
+	.ls-related a:hover span:first-child { text-decoration: underline; }
+	.ls-page-tools {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		margin-top: 3rem;
+	}
+	.ls-footer {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 1.5rem;
+		margin-top: 4rem;
+		padding: 1.5rem 0 2rem;
+		border-top: 1px solid var(--ls-line);
+		font-size: 0.6875rem;
+		color: var(--ls-muted);
+	}
+	.ls-foot-brand {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		font-weight: 800;
+		font-size: 1rem;
+		letter-spacing: -0.03em;
+		color: var(--sl-color-white);
+		text-decoration: none;
+	}
+	.ls-footer p { margin: 0; }
+	.ls-foot-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.1rem;
+		margin-inline-start: auto;
+	}
+	.ls-foot-links a { color: var(--ls-deep); text-decoration: none; padding: 0.4rem 0; }
+	.ls-foot-links a:hover { text-decoration: underline; }
+	.ls-copy {
+		width: 100%;
+		font: 0.5625rem var(--ls-mono);
+		letter-spacing: 0.06em;
+	}
+	@media (max-width: 50rem) {
+		.ls-foot-links { margin-inline-start: 0; width: 100%; }
+	}
+</style>

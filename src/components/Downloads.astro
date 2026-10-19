@@ -1,0 +1,182 @@
+---
+// Download cards for the newest release only. Older versions live on GitHub Releases.
+import { getRelease, packages, formatSize, formatDate, RELEASES_URL } from '../lib/release';
+
+const release = await getRelease();
+const { known, other } = packages(release);
+const groups = [
+	{ os: 'linux', title: 'Linux', items: known.filter((p) => p.os === 'linux') },
+	{ os: 'windows', title: 'Windows', items: known.filter((p) => p.os === 'windows') },
+].filter((g) => g.items.length);
+---
+
+<div class="ls-dl not-content">
+	<div class="ls-dl-head">
+		<p class="ls-eyebrow">Newest release</p>
+		<p class="ls-dl-version">
+			linscp {release.version}
+			{release.prerelease && <span class="ls-badge">Pre-release</span>}
+		</p>
+		<p class="ls-dl-meta">
+			Released <time datetime={release.date}>{formatDate(release.date)}</time> ·{' '}
+			<a href={release.url}>Release notes</a> ·{' '}
+			<a href={RELEASES_URL}>All versions</a>
+		</p>
+	</div>
+
+	{
+		groups.map((g) => (
+			<section class="ls-dl-os" data-os={g.os} aria-labelledby={`os-${g.os}`}>
+				<h2 id={`os-${g.os}`}>
+					{g.title}
+					<span class="ls-dl-yours" hidden>
+						Your system
+					</span>
+				</h2>
+				<div class="ls-dl-grid">
+					{g.items.map((p) => (
+						<article class="ls-dl-card">
+							<p class="ls-eyebrow">{p.label}</p>
+							<a class="ls-dl-file" href={p.asset.url}>
+								{p.asset.name}
+							</a>
+							<p class="ls-dl-note">{p.note}</p>
+							{p.install && <pre class="ls-dl-cmd"><code>{p.install}</code></pre>}
+							<p class="ls-dl-size">{formatSize(p.asset.size)}</p>
+							{p.asset.sha256 && (
+								<details class="ls-dl-sum">
+									<summary>SHA-256</summary>
+									<code>{p.asset.sha256}</code>
+								</details>
+							)}
+						</article>
+					))}
+				</div>
+			</section>
+		))
+	}
+
+	{
+		other.length > 0 && (
+			<section class="ls-dl-other">
+				<h2>Other files</h2>
+				<ul>
+					{other.map((a) => (
+						<li>
+							<a href={a.url}>{a.name}</a> <span>{formatSize(a.size)}</span>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+</div>
+
+<script>
+	// Highlight the visitor's platform; everything stays visible.
+	const ua = navigator.userAgent;
+	const os = /Windows/i.test(ua) ? 'windows' : /Linux|X11/i.test(ua) && !/Android/i.test(ua) ? 'linux' : null;
+	if (os) {
+		const sec = document.querySelector<HTMLElement>(`.ls-dl-os[data-os="${os}"]`);
+		if (sec) {
+			sec.classList.add('is-yours');
+			sec.querySelector<HTMLElement>('.ls-dl-yours')?.removeAttribute('hidden');
+			sec.parentElement?.insertBefore(sec, sec.parentElement.querySelector('.ls-dl-os'));
+		}
+	}
+</script>
+
+<style>
+	.ls-dl-head {
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--ls-line);
+	}
+	.ls-dl-version {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		margin: 0;
+		font-size: 1.75rem;
+		font-weight: 750;
+		letter-spacing: -0.03em;
+		color: var(--sl-color-white);
+	}
+	.ls-dl-meta {
+		margin: 0.4rem 0 0;
+		font-size: 0.8125rem;
+		color: var(--ls-muted);
+	}
+	.ls-dl-meta a { color: var(--ls-deep); }
+	.ls-dl-os { margin-top: 2.25rem; }
+	.ls-dl-os h2 {
+		display: flex;
+		align-items: center;
+		gap: 0.8rem;
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: var(--sl-color-white);
+		margin: 0 0 1rem;
+	}
+	.ls-dl-yours {
+		font: 600 0.5625rem/1 var(--ls-mono);
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		padding: 0.4rem 0.5rem;
+		background: var(--ls-amber);
+		color: #3a2a00;
+	}
+	.ls-dl-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+		gap: 1rem;
+	}
+	.ls-dl-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
+		padding: 1.15rem 1.2rem;
+		border: 1px solid var(--ls-line);
+		background: var(--ls-paper);
+	}
+	.is-yours .ls-dl-card { border-top: 3px solid var(--ls-blue); }
+	.ls-dl-card .ls-eyebrow { margin: 0; }
+	.ls-dl-file {
+		font-weight: 700;
+		font-size: 0.9375rem;
+		color: var(--ls-deep);
+		overflow-wrap: anywhere;
+	}
+	.ls-dl-note {
+		margin: 0;
+		font-size: 0.8125rem;
+		line-height: 1.6;
+		color: var(--ls-muted);
+	}
+	.ls-dl-cmd {
+		margin: 0.2rem 0 0;
+		padding: 0.6rem 0.7rem;
+		background: var(--ls-soft);
+		font: 0.75rem/1.6 var(--ls-mono);
+		overflow-x: auto;
+	}
+	.ls-dl-size {
+		margin: auto 0 0;
+		font: 0.6875rem var(--ls-mono);
+		color: var(--ls-muted);
+	}
+	.ls-dl-sum summary {
+		cursor: pointer;
+		font: 600 0.625rem var(--ls-mono);
+		letter-spacing: 0.08em;
+		color: var(--ls-muted);
+	}
+	.ls-dl-sum code {
+		display: block;
+		margin-top: 0.4rem;
+		font: 0.625rem/1.5 var(--ls-mono);
+		overflow-wrap: anywhere;
+		color: var(--sl-color-white);
+	}
+	.ls-dl-other { margin-top: 2rem; font-size: 0.8125rem; }
+	.ls-dl-other span { color: var(--ls-muted); font-family: var(--ls-mono); }
+</style>

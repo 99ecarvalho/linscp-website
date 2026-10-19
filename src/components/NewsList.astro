@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import { formatDate, RELEASES_URL } from '../lib/release';
+import { href } from '../lib/site';
+
+const posts = (await getCollection('docs', (e) => e.id.startsWith('news/') && e.data.date)).sort(
+	(a, b) => +b.data.date! - +a.data.date!,
+);
+---
+
+<div class="ls-newslist not-content">
+	<ul>
+		{
+			posts.map((p) => (
+				<li>
+					<p class="ls-eyebrow">
+						{p.data.badge && <span>{p.data.badge} · </span>}
+						<time datetime={p.data.date!.toISOString()}>{formatDate(p.data.date!.toISOString())}</time>
+					</p>
+					<a href={href(`/${p.id}/`)}>{p.data.title}</a>
+					{p.data.description && <p>{p.data.description}</p>}
+				</li>
+			))
+		}
+	</ul>
+	<p class="ls-newslist-more">
+		Full change lists for every version are in the <a href={RELEASES_URL}>release notes on GitHub</a>.
+	</p>
+</div>
+
+<style>
+	ul { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--sl-color-white); }
+	li { padding: 1.4rem 0; border-bottom: 1px solid var(--ls-line); }
+	li .ls-eyebrow { margin-bottom: 0.35rem; }
+	li a {
+		font-size: 1.375rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--sl-color-white);
+		text-decoration: none;
+	}
+	li a:hover { color: var(--ls-deep); }
+	li p:not(.ls-eyebrow) { margin: 0.4rem 0 0; font-size: 0.9375rem; color: var(--ls-muted); max-width: 44rem; }
+	.ls-newslist-more { margin-top: 1.5rem; font-size: 0.8125rem; color: var(--ls-muted); }
+	.ls-newslist-more a { color: var(--ls-deep); }
+</style>

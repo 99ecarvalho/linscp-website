@@ -1,0 +1,715 @@
+# Texts for the scripting reference (see scripts/gen-cli-reference.mjs).
+# Every sentence here is written for this site. Only names come from linscp-cli.
+
+intro: |
+  These are the commands that `linscp-cli` accepts at its prompt, in a script
+  file passed with `/script`, or as arguments to `/command`. For how scripts
+  are put together, read
+  [Scripting with linscp-cli](../../scripting/introduction/).
+
+switchesIntro: |
+  Run `linscp-cli` on its own to get an interactive `linscp>` prompt, or pass
+  switches to run commands without typing them. Every switch starts with a
+  slash, for example `/script=/home/alice/upload.txt`. You can put a session
+  before the switches: either the name of a site saved in the Site Manager or
+  a session URL such as `sftp://alice@example.com/`. See
+  [Scripting with linscp-cli](../../scripting/introduction/) for complete
+  examples.
+
+switchSyntax:
+  /privatekey: '/privatekey=<file>'
+  /hostkey: '/hostkey=<fingerprint>'
+  /username: '/username=<user>'
+  /password: '/password=<password>'
+  /clientcert: '/clientcert=<file>'
+  /certificate: '/certificate=<fingerprint>'
+  /passphrase: '/passphrase=<passphrase>'
+  /passive: '/passive[=<on/off>]'
+  /timeout: '/timeout=<seconds>'
+  /rawsettings: '/rawsettings <name>=<value>...'
+  /script: '/script=<file>'
+  /command: '/command <command>...'
+  /parameter: '/parameter // <value>...'
+  /stdout: '/stdout[=binary/chunked]'
+  /stdin: '/stdin[=binary]'
+  /log: '/log=<file>'
+  /loglevel: '/loglevel=<level>'
+  /logsize: '/logsize=[<count>*]<size>'
+  /xmllog: '/xmllog=<file>'
+  /ini: '/ini=<file>'
+  /rawconfig: '/rawconfig <name>=<value>...'
+  /batchsettings: '/batchsettings <site-mask> <name>=<value>...'
+  /copyid: '/copyid /identity=<key-file> <site>'
+
+switches:
+  /privatekey: SSH private key to authenticate with when connecting to the session given on the command line.
+  /hostkey: Fingerprint the server's SSH host key must have; the connection is refused if it differs.
+  /username: User name to log in with, used instead of one in the site or URL.
+  /password: Password to log in with. Other users of the machine may see it in the process list, so prefer `/passwordsfromfiles`.
+  /passwordsfromfiles: Treat the values of the password and passphrase switches as names of files that hold the secret.
+  /clientcert: TLS client certificate file, for FTPS and WebDAV servers that ask for one.
+  /certificate: Fingerprint the server's TLS certificate must have, for FTPS and WebDAVS.
+  /passphrase: Passphrase that unlocks an encrypted private key or client certificate.
+  /passive: Turn FTP passive mode on (the default) or, with `=off`, use active mode.
+  /implicit: Use implicit TLS for FTP, usually on port 990.
+  /explicit: Use explicit TLS for FTP, upgrading the plain connection with `AUTH TLS`.
+  /timeout: How many seconds to wait for a server reply before giving up.
+  /rawsettings: Set any site setting by its raw name, as stored in the configuration file. See [raw configuration](../../scripting/raw-configuration/).
+  /script: Run the commands in a text file. If the file does not end with `exit`, the prompt stays open afterwards.
+  /command: Run each following argument as one command. Quote every command that contains spaces.
+  /parameter: Pass values to the script, where `%1%`, `%2%` and so on stand for them. The `//` ends the list of switches.
+  /stdout: Let `get` write a file to standard output when you give `-` as the target. Progress and messages then go to standard error.
+  /stdin: Let `put` read file content from standard input when you give `-` as the source.
+  /log: Write a session log to this file.
+  /loglevel: How much detail the log holds, from `0` to `2`. A trailing `*` also records passwords, so keep such logs private.
+  /logsize: Start a new log file when the current one reaches the size (such as `10M`), keeping at most the given number of old files.
+  /xmllog: Write an XML log of each operation and its result to this file, for other programs to read.
+  /xmlgroups: Wrap the XML log entries of each command in one group element.
+  /nointeractiveinput: Cancel any prompt instead of waiting for keyboard input. Use it in cron jobs and pipelines.
+  /ini: Read and save settings in this file instead of `~/.config/linscp/WinSCP.ini`. With `nul`, start from defaults and save nothing.
+  /rawconfig: Set any application setting by its raw name. linscp-cli saves its configuration when it exits, so the value stays.
+  /batchsettings: Change raw settings on every saved site whose name matches the mask, then save the sites. Prints which sites changed.
+  /copyid: Add the public half of a key to `~/.ssh/authorized_keys` on the server, like `ssh-copy-id`. Needs `/identity` and a site.
+  /info: Print the SSH and TLS libraries linscp uses and the ciphers, key exchanges, host key types and MACs they offer, then exit.
+  /help: Show a short usage summary and exit.
+
+options:
+  echo:
+    values: 'on | off'
+    text: |
+      With `on`, `linscp-cli` prints each command before it runs it. This helps
+      when you read the output of a long script. The default is `off`.
+  batch:
+    values: 'on | off | abort | continue'
+    text: |
+      Controls what happens when a command needs an answer or fails.
+
+      - `off` (default): `linscp-cli` asks you.
+      - `on`: every question gets a negative answer, so the script never waits.
+        Combine it with `option confirm off`, or existing files are not
+        overwritten.
+      - `abort`: questions are answered as with `on`, and the first error stops
+        the script with exit code 1.
+      - `continue`: errors are reported and the script goes on.
+
+      Choosing any batch mode also limits [`reconnecttime`](#reconnecttime) to
+      120 seconds if it was `off`.
+  confirm:
+    values: 'on | off'
+    text: |
+      With `on` (default), `get` and `put` ask before they overwrite an existing
+      file. Set it to `off` in scripts that should replace files without asking.
+  reconnecttime:
+    values: 'off | <seconds>'
+    text: |
+      How long `linscp-cli` keeps trying to restore a dropped connection during
+      a transfer or synchronization before it reports an error. `off` (default)
+      means no limit.
+  failonnomatch:
+    values: 'on | off'
+    text: |
+      Decides whether a mask that matches nothing is an error. With `off`
+      (default), the command prints a message and the script continues. With
+      `on`, the command fails, which stops a script running in `batch abort`
+      mode. It applies to `get`, `put`, `rm`, `mv`, `cp`, `chmod`, `ls` and
+      `lls`.
+
+commands:
+
+  call:
+    summary: Run a shell command or raw protocol command on the server.
+    syntax: |
+      call <command>
+    body: |
+      With SFTP and SCP, `call` runs `<command>` in a shell on the server and
+      prints what it writes. If the current connection cannot run commands,
+      linscp opens a second shell session for it with the same login.
+
+      With FTP, `call` sends `<command>` to the server as it is, for example a
+      `SITE` command.
+
+      The command runs without a terminal, so it must not wait for input. Use
+      [`checksum`](../checksum/) or [`chmod`](../chmod/) where they fit; they
+      work without a shell.
+    examples:
+      - note: Unpack an archive you just uploaded.
+        code: |
+          call tar -xzf /var/www/release.tar.gz -C /var/www/html
+
+  cd:
+    summary: Change the remote working directory.
+    syntax: |
+      cd [<remote-directory>]
+    body: |
+      Moves the active session to `<remote-directory>` and prints the new path.
+      Relative paths start from the current remote directory. Without an
+      argument, `cd` goes to your home directory on the server.
+
+      Commands that take remote paths, such as [`get`](../get/) and
+      [`ls`](../ls/), resolve relative names against this directory. To change
+      the local directory, use [`lcd`](../lcd/).
+    examples:
+      - code: |
+          cd /var/www/html
+          cd ..
+          cd
+
+  checksum:
+    summary: Print the hash of one remote file.
+    syntax: |
+      checksum <algorithm> <remote-file>
+    body: |
+      Computes a hash of `<remote-file>` on the server and prints it followed by
+      the file name. The file is not downloaded.
+
+      Which algorithms work depends on the server. With SFTP the server must
+      offer hashing, or linscp falls back to a shell session and the usual
+      command-line tools. Common names are `md5`, `sha-1` and `sha-256`.
+
+      Only a single file is accepted; a directory or a mask that matches several
+      files is an error.
+    examples:
+      - code: |
+          checksum sha-256 /srv/backups/db.dump
+
+  chmod:
+    summary: Change the permissions of remote files.
+    syntax: |
+      chmod <mode> <remote-file>...
+    body: |
+      Sets the permissions of each named file to `<mode>`, an octal number of
+      three digits (`644`) or four, where the first digit holds the setuid,
+      setgid and sticky bits (`1777`).
+
+      The last part of each name may be a [mask](../../masks/), such as
+      `*.sh`. A mask that matches nothing is handled as set by
+      [`failonnomatch`](../option/#failonnomatch).
+
+      The server must support permissions; SFTP and SCP do, and many FTP
+      servers accept `SITE CHMOD`.
+    examples:
+      - code: |
+          chmod 755 /home/alice/bin/deploy.sh
+          chmod 640 /var/www/html/*.php
+
+  close:
+    summary: Close a session.
+    syntax: |
+      close [<number>]
+    body: |
+      Disconnects the session with the given number, as listed by
+      [`session`](../session/). Without a number, `close` disconnects the
+      active session.
+
+      To end the program and close every session at once, use
+      [`exit`](../exit/).
+    examples:
+      - code: |
+          close
+          close 2
+
+  cp:
+    summary: Copy files to another place on the same server.
+    syntax: |
+      cp <remote-file>... <remote-target>
+    body: |
+      Duplicates files on the server without downloading them. The last
+      argument says where the copies go:
+
+      - a directory, written with a trailing `/` (`/srv/backup/`), keeps the
+        names;
+      - a plain name (`index.old`) gives a single copy that name;
+      - an operation mask (`*.bak`) renames each copy. See
+        [operation masks](../../masks/#operation-masks).
+
+      You can combine a directory with a name or mask: `/srv/backup/*.bak`.
+      The sources may contain masks too. `cp` does not replace a file that
+      already exists at the target.
+
+      The server must support copying: SFTP servers with the copy extension, or
+      any server where linscp can open a shell.
+    examples:
+      - code: |
+          cp /var/www/html/index.html /var/www/html/index.html.orig
+          cp /etc/nginx/*.conf /home/alice/nginx-backup/
+
+  echo:
+    summary: Print a line of text.
+    syntax: |
+      echo <text>
+    body: |
+      Writes `<text>` to the output exactly as you typed it, quotes included.
+      Use it to label sections of a long script's output or to print script
+      [parameters](../../linscp-cli-switches/) such as `%1%`.
+    examples:
+      - code: |
+          echo Uploading release %1%...
+
+  exit:
+    summary: Close all sessions and quit linscp-cli.
+    syntax: |
+      exit
+    body: |
+      Disconnects every open session and ends the program. In a script, put
+      `exit` on the last line; without it, `linscp-cli` stays at the prompt once
+      the file is done.
+
+      The exit code is `0` when every command succeeded and `1` when any of them
+      failed. Read [option batch](../option/#batch) to control whether a script
+      goes on after an error.
+    examples:
+      - code: |
+          exit
+
+  get:
+    summary: Download files from the server.
+    syntax: |
+      get [switches] <remote-file>... [<local-target>]
+    body: |
+      Copies remote files and directories to the local computer. Directories
+      are copied with everything they contain.
+
+      With a single argument, the file lands in the local working directory
+      (see [`lcd`](../lcd/)). With more, the last argument is the target:
+
+      - end it with `/` to name a directory: `/home/alice/backup/`;
+      - otherwise its last part is the new file name, or an
+        [operation mask](../../masks/#operation-masks) such as `*.bak`.
+
+      Use `./` as the target to download several files into the local working
+      directory. The source names may use [masks](../../masks/) in their last
+      part. With `/stdout`, a target of `-` writes the file to standard output.
+    switchSyntax:
+      -preservetime: '-preservetime[=all]'
+      -speed: '-speed=<KB/s>'
+      -transfer: '-transfer=<mode>'
+      -filemask: '-filemask=<mask>'
+      -resumesupport: '-resumesupport=<on/off/KB>'
+    switches:
+      -delete: Remove each remote file once it has been downloaded, which turns the copy into a move.
+      -resume: Continue an interrupted download where it stopped (SFTP and FTP).
+      -append: Add the downloaded data to the end of an existing local file (SFTP).
+      -preservetime: Give local files the modification time of the remote ones. With `=all`, directories keep theirs too.
+      -nopreservetime: Let downloaded files get the current time.
+      -speed: Cap the download rate in kilobytes per second.
+      -transfer: Use `binary`, `ascii` (convert line endings) or `automatic` mode.
+      -filemask: Select which files and subdirectories to download with an include and exclude [mask](../../masks/).
+      -resumesupport: Download to a temporary file first, always (`on`), never (`off`), or for files larger than the number of KB given.
+      -neweronly: Skip files whose local copy is the same age or newer.
+      -latest: Download only the most recently modified of the matching files.
+    examples:
+      - note: Download one file into a local directory.
+        code: |
+          get /var/www/html/index.html /home/alice/backup/
+      - note: Move the day's logs, renaming them on the way.
+        code: |
+          get -delete /var/log/app/*.log /home/alice/logs/*.old
+      - note: Fetch only the newest dump.
+        code: |
+          get -latest /srv/backups/*.sql.gz ./
+
+  help:
+    summary: List the commands or show help for some of them.
+    syntax: |
+      help [<command>...]
+    body: |
+      Without arguments, `help` lists every command with a one-line purpose.
+      With command names, it prints the built-in help for each.
+
+      The built-in help comes from WinSCP and still shows some Windows paths in
+      its examples. On Linux, local paths use `/`, and a local target directory
+      ends with `/`. This reference describes the Linux behaviour.
+    examples:
+      - code: |
+          help
+          help get put
+
+  keepuptodate:
+    summary: Watch a local directory and mirror its changes to the server.
+    syntax: |
+      keepuptodate [switches] [<local-directory> [<remote-directory>]]
+    body: |
+      Watches `<local-directory>` and its subdirectories. Each time something
+      changes, linscp waits until the directory has been quiet for half a
+      second, then uploads what is new or modified to the matching place under
+      `<remote-directory>`. Without arguments it uses the local and remote
+      working directories.
+
+      `keepuptodate` does not upload anything that existed before it started;
+      run [`synchronize remote`](../synchronize/) first if the two sides differ.
+      Existing remote files are replaced without asking.
+
+      The command runs until you press <kbd>Ctrl</kbd>+<kbd>C</kbd> or an error
+      occurs, so it is usually the last command in a script.
+    switchSyntax:
+      -permissions: '-permissions=<mode>'
+      -speed: '-speed=<KB/s>'
+      -transfer: '-transfer=<mode>'
+      -filemask: '-filemask=<mask>'
+      -resumesupport: '-resumesupport=<on/off/KB>'
+    switches:
+      -delete: Remove a remote file or directory after it is deleted locally.
+      -permissions: Give uploaded files these octal permissions, such as `644`.
+      -nopermissions: Let the server choose the permissions of uploaded files.
+      -speed: Cap the upload rate in kilobytes per second.
+      -transfer: Use `binary`, `ascii` (convert line endings) or `automatic` mode.
+      -filemask: Watch and upload only what this [mask](../../masks/) selects.
+      -resumesupport: Upload to a temporary file first, always (`on`), never (`off`), or for files larger than the number of KB given.
+    examples:
+      - code: |
+          keepuptodate -delete /home/alice/site /var/www/html
+
+  lcd:
+    summary: Change the local working directory.
+    syntax: |
+      lcd <local-directory>
+    body: |
+      Sets the local directory that every session uses and prints the new path.
+      Relative paths start from the current local directory; `..` goes up one
+      level. A directory is required, and `~` is not expanded, so write your
+      home directory in full.
+
+      [`get`](../get/) downloads into this directory by default, and
+      [`put`](../put/) resolves relative source names against it. To see where
+      you are, use [`lpwd`](../lpwd/).
+    examples:
+      - code: |
+          lcd /home/alice/site
+          lcd ..
+
+  lls:
+    summary: List a local directory.
+    syntax: |
+      lls [<local-directory>][/<wildcard>]
+    body: |
+      Prints the contents of a local directory, one entry per line with its date,
+      time and either its size or `<DIR>`. Without an argument it lists the
+      local working directory.
+
+      A wildcard in the last part, such as `*.html`, limits the list to the
+      matching names. On Linux this match is case-sensitive, and the size and
+      time constraints of other [masks](../../masks/) do not apply here. A
+      wildcard that matches nothing is handled as set by
+      [`failonnomatch`](../option/#failonnomatch).
+    examples:
+      - code: |
+          lls
+          lls /home/alice/site/*.html
+
+  ln:
+    summary: Create a symbolic link on the server.
+    syntax: |
+      ln <target> <link>
+    body: |
+      Creates the symbolic link `<link>`, pointing to `<target>`. The order is
+      the same as in `ln -s`: what the link points to comes first.
+
+      `<target>` is stored as written, so a relative target is resolved from the
+      directory that holds the link. The server must support symbolic links,
+      which SFTP and SCP servers normally do.
+    examples:
+      - code: |
+          ln /var/www/releases/2.4.0 /var/www/current
+
+  lpwd:
+    summary: Print the local working directory.
+    syntax: |
+      lpwd
+    body: |
+      Prints the local directory that [`get`](../get/), [`put`](../put/) and
+      [`lls`](../lls/) use for relative paths. Change it with
+      [`lcd`](../lcd/).
+    examples:
+      - code: |
+          lpwd
+
+  ls:
+    summary: List a remote directory.
+    syntax: |
+      ls [<remote-directory>][/<mask>]
+    body: |
+      Prints the contents of a remote directory in a long format similar to
+      `ls -l`. Without an argument it lists the remote working directory.
+
+      A [mask](../../masks/) in the last part, such as `*.log`, limits the list
+      to matching entries. When the mask matches nothing, the result follows
+      [`failonnomatch`](../option/#failonnomatch), which makes `ls` a simple
+      way to test whether a file exists.
+    examples:
+      - code: |
+          ls
+          ls /var/log/app/*.log
+
+  mkdir:
+    summary: Create a remote directory.
+    syntax: |
+      mkdir <remote-directory>
+    body: |
+      Creates one directory. Its parent must already exist, so create nested
+      directories one level at a time.
+    examples:
+      - code: |
+          mkdir /var/www/html/assets
+          mkdir /var/www/html/assets/img
+
+  mv:
+    summary: Move or rename remote files.
+    syntax: |
+      mv <remote-file>... <remote-target>
+    body: |
+      Moves files and directories within the server, or renames them. The last
+      argument is the destination:
+
+      - a directory with a trailing `/` keeps the names;
+      - a plain name renames a single file;
+      - an [operation mask](../../masks/#operation-masks) such as `*.old`
+        renames each file it is applied to.
+
+      A directory and a name or mask can be combined: `/srv/archive/*.old`. The
+      sources may contain masks. `mv` does not replace an existing file at the
+      destination.
+    examples:
+      - code: |
+          mv /var/www/html/index.html /var/www/html/index.old
+          mv /srv/incoming/*.csv /srv/processed/
+
+  open:
+    summary: Connect to a server.
+    syntax: |
+      open [switches] <site>
+      open [switches] <protocol>://[<user>[:<password>]@]<host>[:<port>][/<path>]
+    body: |
+      Starts a new session and makes it the active one. Give either the name of
+      a site saved in the Site Manager or a
+      [session URL](../../../connecting/session-urls/). The protocol is one of
+      `sftp`, `scp`, `ftp`, `ftps`, `ftpes`, `dav`, `davs` or `s3`. A path at
+      the end of the URL becomes the starting remote directory.
+
+      Switches set or override parts of the login. You can keep several
+      sessions open and move between them with [`session`](../session/).
+
+      Pin the server's identity in scripts with `-hostkey` or `-certificate`.
+      `-hostkey=*` accepts any key; it removes the protection against
+      impostor servers, so use it only for tests.
+    switchSyntax:
+      -privatekey: '-privatekey=<file>'
+      -hostkey: '-hostkey=<fingerprint>'
+      -clientcert: '-clientcert=<file>'
+      -certificate: '-certificate=<fingerprint>'
+      -passphrase: '-passphrase=<passphrase>'
+      -passive: '-passive=<on/off>'
+      -timeout: '-timeout=<seconds>'
+      -username: '-username=<user>'
+      -password: '-password=<password>'
+      -rawsettings: '-rawsettings <name>=<value>...'
+      -newpassword: '-newpassword=<password>'
+    switches:
+      -privatekey: SSH private key to authenticate with.
+      -hostkey: Fingerprint the SSH host key must match (SFTP and SCP).
+      -clientcert: TLS client certificate file to present (FTPS and WebDAVS).
+      -certificate: Fingerprint the server's TLS certificate must match (FTPS and WebDAVS).
+      -passphrase: Passphrase for an encrypted private key or client certificate.
+      -passive: Use FTP passive mode (`on`) or active mode (`off`).
+      -implicit: Use implicit TLS for FTP.
+      -explicit: Use explicit TLS for FTP.
+      -timeout: Seconds to wait for a server reply before giving up.
+      -username: User name, used instead of one in the site or URL.
+      -password: Password, used instead of one in the site or URL.
+      -rawsettings: Set any site setting by its raw configuration name. See [raw configuration](../../../scripting/raw-configuration/).
+      -filezilla: Take `<site>` from FileZilla's site list (`~/.config/filezilla/sitemanager.xml`) instead of linscp's.
+      -newpassword: Change the account password to this value while logging in, when the server supports it.
+      -passwordsfromfiles: Treat the values of `-password`, `-passphrase` and `-newpassword` as paths of files that hold them.
+    examples:
+      - note: Open a saved site.
+        code: |
+          open "Production web"
+      - note: Connect with a key and a pinned host key.
+        code: |
+          open sftp://deploy@example.com/ -privatekey=/home/alice/.ssh/deploy.ppk -hostkey="ssh-ed25519 255 SHA256:..."
+
+  option:
+    summary: Show or change the script options.
+    syntax: |
+      option [<name> [<value>]]
+    body: |
+      With no argument, `option` prints every script option and its current
+      value. With a name, it prints that one. With a name and a value, it sets
+      the option and prints the result.
+
+      Some options start from your linscp preferences. Changing them here lasts
+      only until `linscp-cli` exits and never touches the saved configuration.
+      The options are described below.
+    examples:
+      - note: The usual start of an unattended script.
+        code: |
+          option batch abort
+          option confirm off
+
+  put:
+    summary: Upload files to the server.
+    syntax: |
+      put [switches] <local-file>... [<remote-target>]
+    body: |
+      Copies local files and directories to the server. Directories are copied
+      with everything they contain.
+
+      With a single argument, the file goes to the remote working directory
+      (see [`cd`](../cd/)). With more, the last argument is the target:
+
+      - end it with `/` to name a directory: `/var/www/html/`;
+      - otherwise its last part is the new name, or an
+        [operation mask](../../masks/#operation-masks) such as `*.bak`.
+
+      Use `./` as the target to upload several files into the remote working
+      directory. Wildcards in local source names follow the local file system,
+      so they are case-sensitive on Linux. With `/stdin`, a source of `-`
+      uploads standard input to the single file named by the target.
+    switchSyntax:
+      -preservetime: '-preservetime[=all]'
+      -permissions: '-permissions=<mode>'
+      -speed: '-speed=<KB/s>'
+      -transfer: '-transfer=<mode>'
+      -filemask: '-filemask=<mask>'
+      -resumesupport: '-resumesupport=<on/off/KB>'
+    switches:
+      -delete: Remove each local file once it has been uploaded, which turns the copy into a move.
+      -resume: Continue an interrupted upload where it stopped (SFTP and FTP).
+      -append: Add the uploaded data to the end of an existing remote file (SFTP).
+      -preservetime: Give remote files the modification time of the local ones. With `=all`, directories keep theirs too.
+      -nopreservetime: Let uploaded files get the current time.
+      -permissions: Give uploaded files these octal permissions, such as `644`.
+      -nopermissions: Let the server choose the permissions of uploaded files.
+      -speed: Cap the upload rate in kilobytes per second.
+      -transfer: Use `binary`, `ascii` (convert line endings) or `automatic` mode.
+      -filemask: Select which files and subdirectories to upload with an include and exclude [mask](../../masks/).
+      -resumesupport: Upload to a temporary file first, always (`on`), never (`off`), or for files larger than the number of KB given.
+      -neweronly: Skip files whose remote copy is the same age or newer.
+      -latest: Upload only the most recently modified of the matching files.
+    examples:
+      - note: Publish a page with fixed permissions.
+        code: |
+          put -permissions=644 /home/alice/site/index.html /var/www/html/
+      - note: Upload a directory tree, leaving out temporary files and Git data.
+        code: |
+          put -filemask="|*.tmp; .git/" /home/alice/site/ /var/www/html/
+      - note: Stream a database dump straight to the server (needs `/stdin`).
+        code: |
+          put - /srv/backups/db.sql
+
+  pwd:
+    summary: Print the remote working directory.
+    syntax: |
+      pwd
+    body: |
+      Prints the current directory of the active session. Relative remote paths
+      in other commands start from here; change it with [`cd`](../cd/).
+    examples:
+      - code: |
+          pwd
+
+  rm:
+    summary: Delete remote files and directories.
+    syntax: |
+      rm <remote-file>...
+    body: |
+      Deletes each named file. A named directory is deleted together with
+      everything inside it. The last part of each name may be a
+      [mask](../../masks/).
+
+      When the site has a remote recycle bin configured, `rm` moves the files
+      there instead of deleting them.
+
+      A mask that matches nothing is handled as set by
+      [`failonnomatch`](../option/#failonnomatch).
+    examples:
+      - code: |
+          rm /var/www/html/old.html
+          rm /tmp/upload-*.part
+
+  rmdir:
+    summary: Delete empty remote directories.
+    syntax: |
+      rmdir <remote-directory>...
+    body: |
+      Deletes each named directory. Most servers refuse unless the directory is
+      empty; to delete a directory with its contents, use [`rm`](../rm/).
+      `rmdir` accepts only directories, which guards against deleting a file by
+      mistake.
+
+      When the site has a remote recycle bin configured, the directories are
+      moved there instead.
+    examples:
+      - code: |
+          rmdir /var/www/releases/2.3.0
+
+  session:
+    summary: List open sessions or switch to another one.
+    syntax: |
+      session [<number>]
+    body: |
+      Without a number, `session` lists the open sessions with their numbers.
+      With a number, it makes that session active, so the next remote commands
+      go to it.
+
+      Each [`open`](../open/) adds a session and makes it active.
+    examples:
+      - code: |
+          session
+          session 1
+
+  stat:
+    summary: Show the attributes of one remote file.
+    syntax: |
+      stat <remote-file>
+    body: |
+      Prints a single listing line for `<remote-file>`: permissions, owner,
+      group, size, modification time and name, in the same format as
+      [`ls`](../ls/). It fails when the file does not exist, which a script can
+      use as a test.
+    examples:
+      - code: |
+          stat /var/www/html/index.html
+
+  synchronize:
+    summary: Make a local and a remote directory match.
+    syntax: |
+      synchronize local|remote|both [switches] [<local-directory> [<remote-directory>]]
+    body: |
+      Compares the two directory trees and copies what differs. The first
+      argument picks the direction:
+
+      - `remote` uploads, so the server matches your computer;
+      - `local` downloads, so your computer matches the server;
+      - `both` copies newer files in each direction.
+
+      Without directories, the local and remote working directories are used.
+      Files are replaced without asking. By default only files that are new or
+      newer on the source side are copied; `-mirror` and `-criteria` change that.
+
+      Try a new command with `-preview` first, especially together with
+      `-delete`. See [Synchronizing directories](../../../sync/synchronize/).
+    switchSyntax:
+      -criteria: '-criteria=<criteria>'
+      -permissions: '-permissions=<mode>'
+      -speed: '-speed=<KB/s>'
+      -transfer: '-transfer=<mode>'
+      -filemask: '-filemask=<mask>'
+      -resumesupport: '-resumesupport=<on/off/KB>'
+    switches:
+      -preview: List what would be copied or deleted, and change nothing.
+      -delete: Delete files and directories in the target that the source does not have. Ignored with `both`.
+      -mirror: Copy every file that differs, even when the target copy is newer. Ignored with `both`.
+      -criteria: How files are compared. `time`, `size` and `checksum` can be combined with commas, such as `time,size`; `none` copies only missing files; `either` means `time,size`. Ignored with `both`.
+      -permissions: Give uploaded files these octal permissions, such as `644`.
+      -nopermissions: Let the server choose the permissions of uploaded files.
+      -speed: Cap the transfer rate in kilobytes per second.
+      -transfer: Use `binary`, `ascii` (convert line endings) or `automatic` mode.
+      -filemask: Limit the comparison to what this [mask](../../masks/) selects.
+      -resumesupport: Transfer to a temporary file first, always (`on`), never (`off`), or for files larger than the number of KB given.
+    examples:
+      - note: See what an upload would change.
+        code: |
+          synchronize remote -preview -delete /home/alice/site /var/www/html
+      - note: Back up a server directory, comparing by size as well as time.
+        code: |
+          synchronize local -criteria=time,size /home/alice/backup/www /var/www

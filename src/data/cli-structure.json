@@ -1,0 +1,283 @@
+{
+	"source": "linscp-cli",
+	"version": "6.7.1",
+	"switches": [
+		"/privatekey",
+		"/hostkey",
+		"/username",
+		"/password",
+		"/passwordsfromfiles",
+		"/clientcert",
+		"/certificate",
+		"/passphrase",
+		"/passive",
+		"/implicit",
+		"/explicit",
+		"/timeout",
+		"/rawsettings",
+		"/script",
+		"/command",
+		"/parameter",
+		"/stdout",
+		"/stdin",
+		"/log",
+		"/loglevel",
+		"/logsize",
+		"/xmllog",
+		"/xmlgroups",
+		"/nointeractiveinput",
+		"/ini",
+		"/rawconfig",
+		"/batchsettings",
+		"/copyid",
+		"/info",
+		"/help"
+	],
+	"commands": {
+		"call": {
+			"aliases": [
+				"!"
+			],
+			"switches": [],
+			"options": []
+		},
+		"cd": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"checksum": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"chmod": {
+			"aliases": [],
+			"switches": [],
+			"options": [
+				"failonnomatch"
+			]
+		},
+		"close": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"cp": {
+			"aliases": [],
+			"switches": [],
+			"options": [
+				"failonnomatch"
+			]
+		},
+		"echo": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"exit": {
+			"aliases": [
+				"bye"
+			],
+			"switches": [],
+			"options": []
+		},
+		"get": {
+			"aliases": [
+				"recv",
+				"mget"
+			],
+			"switches": [
+				"-delete",
+				"-resume",
+				"-append",
+				"-preservetime",
+				"-nopreservetime",
+				"-speed",
+				"-transfer",
+				"-filemask",
+				"-resumesupport",
+				"-neweronly",
+				"-latest"
+			],
+			"options": [
+				"confirm",
+				"failonnomatch",
+				"reconnecttime"
+			]
+		},
+		"help": {
+			"aliases": [
+				"man"
+			],
+			"switches": [],
+			"options": []
+		},
+		"keepuptodate": {
+			"aliases": [],
+			"switches": [
+				"-delete",
+				"-permissions",
+				"-nopermissions",
+				"-speed",
+				"-transfer",
+				"-filemask",
+				"-resumesupport"
+			],
+			"options": [
+				"reconnecttime"
+			]
+		},
+		"lcd": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"lls": {
+			"aliases": [],
+			"switches": [],
+			"options": [
+				"failonnomatch"
+			]
+		},
+		"ln": {
+			"aliases": [
+				"symlink"
+			],
+			"switches": [],
+			"options": []
+		},
+		"lpwd": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"ls": {
+			"aliases": [
+				"dir"
+			],
+			"switches": [],
+			"options": [
+				"failonnomatch"
+			]
+		},
+		"mkdir": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"mv": {
+			"aliases": [
+				"rename"
+			],
+			"switches": [],
+			"options": [
+				"failonnomatch"
+			]
+		},
+		"open": {
+			"aliases": [],
+			"switches": [
+				"-privatekey",
+				"-hostkey",
+				"-clientcert",
+				"-certificate",
+				"-passphrase",
+				"-passive",
+				"-implicit",
+				"-explicit",
+				"-timeout",
+				"-username",
+				"-password",
+				"-rawsettings",
+				"-filezilla",
+				"-newpassword",
+				"-passwordsfromfiles"
+			],
+			"options": []
+		},
+		"option": {
+			"aliases": [],
+			"switches": [],
+			"options": [],
+			"scriptOptions": [
+				"echo",
+				"batch",
+				"confirm",
+				"reconnecttime",
+				"failonnomatch"
+			]
+		},
+		"put": {
+			"aliases": [
+				"send",
+				"mput"
+			],
+			"switches": [
+				"-delete",
+				"-resume",
+				"-append",
+				"-preservetime",
+				"-nopreservetime",
+				"-permissions",
+				"-nopermissions",
+				"-speed",
+				"-transfer",
+				"-filemask",
+				"-resumesupport",
+				"-neweronly",
+				"-latest"
+			],
+			"options": [
+				"confirm",
+				"failonnomatch",
+				"reconnecttime"
+			]
+		},
+		"pwd": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"rm": {
+			"aliases": [],
+			"switches": [],
+			"options": [
+				"failonnomatch"
+			]
+		},
+		"rmdir": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"session": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"stat": {
+			"aliases": [],
+			"switches": [],
+			"options": []
+		},
+		"synchronize": {
+			"aliases": [],
+			"switches": [
+				"-preview",
+				"-delete",
+				"-mirror",
+				"-criteria",
+				"-permissions",
+				"-nopermissions",
+				"-speed",
+				"-transfer",
+				"-filemask",
+				"-resumesupport"
+			],
+			"options": [
+				"reconnecttime"
+			]
+		}
+	}
+}

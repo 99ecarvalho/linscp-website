@@ -1,0 +1,109 @@
+---
+title: Exit codes and error handling
+description: Tell whether a linscp-cli job worked, and choose what a script does when a command fails.
+sidebar:
+  order: 5
+related:
+  - manual/scripting/xml-log
+  - manual/scripting/recipes
+  - manual/scripting/scheduling
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+A job that fails silently is worse than one that does not run. This page shows
+how linscp-cli reports the outcome and how to control its reaction to errors.
+
+## The exit code
+
+linscp-cli ends with one of two codes:
+
+| Code | Meaning |
+|---|---|
+| `0` | Every command ran without error. |
+| `1` | A command failed and stopped the script, a prompt was answered with **Abort**, or the connection could not be opened. |
+
+Scripts cannot choose another code: `exit` takes no argument. For details beyond
+pass or fail, read the session log (`/log=`) or the
+[XML log](../xml-log/).
+
+<Tabs syncKey="os">
+  <TabItem label="Linux">
+
+```sh
+if linscp-cli /nointeractiveinput /script=job.txt /log=job.log; then
+  echo "transfer done"
+else
+  echo "transfer failed, see job.log" >&2
+  exit 1
+fi
+```
+
+  </TabItem>
+  <TabItem label="Windows">
+
+```bat
+"C:\Program Files\linscp\linscp-cli.exe" /nointeractiveinput /script=job.txt /log=job.log
+if %ERRORLEVEL% neq 0 (
+  echo transfer failed, see job.log
+  exit /b 1
+)
+echo transfer done
+```
+
+  </TabItem>
+</Tabs>
+
+## Choosing the reaction to errors
+
+`option batch` decides what happens when a command fails or would ask a
+question:
+
+| Value | Behaviour |
+|---|---|
+| `abort` | Stop at the first error. The exit code is `1`. |
+| `continue` | Report the error and go on with the next command. |
+| `on` | Answer every question automatically with a refusal (no, cancel). |
+| `off` | Ask, as in an interactive session. |
+
+With `/script` or `/command`, linscp-cli starts with `batch abort` and
+`confirm off`, so a script stops on the first problem and overwrites files
+without asking. Typed or piped commands start with `batch off` and
+`confirm on`. Print the current values with a bare `option`.
+
+Switch modes for part of a script when a failure is expected and harmless:
+
+```text
+option batch continue
+rm /tmp/upload/*.part
+option batch abort
+put /home/alice/build/app.tar.gz /tmp/upload/
+```
+
+:::caution
+With `batch continue`, a later command can still succeed and the job can end
+with code `0` even though an earlier step failed. Use it around single
+commands, not for a whole script.
+:::
+
+## When nothing matches
+
+A wildcard that matches no file is a warning by default: the command does
+nothing and the script goes on. To treat it as an error, add:
+
+```text
+option failonnomatch on
+```
+
+Then `get /exports/*.csv /home/alice/in/` fails, and the exit code tells
+your wrapper that there was nothing to fetch.
+
+## Lost connections
+
+In batch mode linscp-cli tries to reconnect a dropped session for up to 120
+seconds before it gives up. Change the limit with `option reconnecttime`,
+in seconds, or turn it off with `option reconnecttime off`. Retrying a whole
+run is a job for the shell; see [script recipes](../recipes/).
+
+The full list of options is on the
+[`option`](../../reference/commands/option/) page.

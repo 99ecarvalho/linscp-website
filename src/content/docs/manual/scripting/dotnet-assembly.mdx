@@ -1,0 +1,117 @@
+---
+title: WinSCP .NET assembly and PowerShell
+description: Drive linscp-cli from C# or PowerShell with WinSCP's .NET assembly, on Windows and on Linux.
+sidebar:
+  order: 11
+related:
+  - manual/scripting/introduction
+  - manual/scripting/xml-log
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+When a job needs loops, conditions or real error handling, a script language
+plus WinSCP's .NET assembly (`WinSCPnet.dll`) is often easier than a
+linscp-cli script. The assembly does not transfer files itself. It starts a
+console client in the background, sends it commands and reads the
+[XML log](../xml-log/) back as objects. linscp-cli speaks the protocol the
+assembly expects, so it can take the place of WinSCP's executable.
+
+This page explains how to connect the two. For the classes and methods
+(`Session`, `SessionOptions`, `TransferOptions` and the rest), use WinSCP's
+own [.NET assembly reference](https://winscp.net/eng/docs/library).
+
+## Getting the assembly
+
+<Tabs syncKey="os">
+  <TabItem label="Windows">
+
+The linscp packages for Windows include a `dotnet` folder in the
+installation directory. It holds `WinSCPnet.dll`, built for .NET Framework 4
+from the same WinSCP source as linscp, and a copy of `linscp-cli` named
+`WinSCP.exe`. The assembly looks for `WinSCP.exe` next to itself, so code that
+loads it from that folder works without further setup.
+
+The assembly that WinSCP itself publishes also works with linscp-cli on
+Windows, provided its version matches the WinSCP version linscp is built
+from. The assembly checks this when it starts.
+
+  </TabItem>
+  <TabItem label="Linux">
+
+No Linux package ships the assembly yet. WinSCP's published assembly cannot
+run on Linux: it talks to the console client through Windows-only named
+objects. linscp carries a small change that uses inherited pipes instead,
+offered to WinSCP upstream. Build the assembly with that change from the
+root of the linscp source tree, with a .NET SDK installed:
+
+```sh
+python3 port/tools/build_winscpnet.py --dotnet "$(command -v dotnet)" \
+  --upstream 3rd-party/winscp --dest /home/alice/winscpnet
+```
+
+The script prints the path of the resulting `WinSCPnet.dll`
+(.NET Standard 2.0). Reference it from your project, or load it from
+PowerShell 7 (`pwsh`).
+
+  </TabItem>
+</Tabs>
+
+## Pointing the assembly at linscp-cli
+
+Set two properties on the `Session` before you open it:
+
+- `ExecutablePath`: the full path of `linscp-cli` (on Windows, the
+  `WinSCP.exe` copy in the `dotnet` folder works too).
+- `DisableVersionCheck = true`: on Linux only. The assembly tries to read
+  the version from a Windows resource that a Linux executable does not have.
+
+```csharp
+using WinSCP;
+
+var options = new SessionOptions
+{
+    Protocol = Protocol.Sftp,
+    HostName = "files.example.org",
+    UserName = "deploy",
+    SshHostKeyFingerprint = "ssh-ed25519 255 Jh3k...Qw8",
+    SshPrivateKeyPath = "/home/alice/.ssh/deploy.ppk",
+};
+
+using var session = new Session
+{
+    ExecutablePath = "/usr/bin/linscp-cli",
+    DisableVersionCheck = !OperatingSystem.IsWindows(),
+};
+session.Open(options);
+session.PutFiles("/home/alice/site/public/*", "/var/www/html/").Check();
+```
+
+The same in PowerShell 7:
+
+```powershell
+Add-Type -Path /home/alice/winscpnet/WinSCPnet.dll
+$session = New-Object WinSCP.Session
+$session.ExecutablePath = "/usr/bin/linscp-cli"
+$session.DisableVersionCheck = $true
+# ... SessionOptions and $session.Open(...) as in WinSCP's documentation
+```
+
+## What to expect
+
+- SFTP, FTP, FTPS, WebDAV and S3 sessions work through the assembly on both
+  systems; linscp's test suite covers each of them.
+- By default the assembly starts linscp-cli with an empty configuration
+  (`/ini=nul`), so stored sites and accepted host keys are not used. Give
+  the host key in `SessionOptions`.
+- The COM interface of the assembly (for VBScript, JScript or VBA) is not
+  part of linscp.
+- WinSCP's PowerShell extensions in **Preferences › Commands** run on
+  Windows only, where Windows PowerShell and the bundled assembly are
+  present.
+
+:::tip
+The GUI writes starter code for you. **Tabs › Generate Session URL/Code...**
+has a **.NET assembly code** tab with C#, VB.NET and PowerShell versions of
+the current connection.
+:::

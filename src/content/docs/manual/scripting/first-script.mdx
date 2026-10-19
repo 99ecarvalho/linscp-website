@@ -1,0 +1,111 @@
+---
+title: Your first automated transfer
+description: Build a script that uploads a folder, test it by hand, then let the GUI write one for you.
+sidebar:
+  order: 2
+related:
+  - manual/scripting/introduction
+  - manual/scripting/sessions-and-credentials
+  - manual/scripting/scheduling
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+This tutorial builds a small job that uploads the files of a local folder to a
+web server. By the end you have a script file, a wrapper you can schedule, and
+a log to read when something fails.
+
+## 1. Save the site in the GUI
+
+Open linscp, create a site in the **Site Manager** for `files.example.org`
+with user `deploy`, and log in once. Accept the host key when asked. The site
+and the key are now stored in the shared configuration, so the script can
+refer to the site by its name, say `webserver`.
+
+:::tip
+Prefer a script that does not depend on stored sites? See
+[sessions and credentials](../sessions-and-credentials/) for opening by URL
+with an explicit host key.
+:::
+
+## 2. Write the script
+
+Create `~/jobs/upload.txt`:
+
+```text
+# Upload the built site
+open webserver
+cd /var/www/html
+lcd /home/alice/site/public
+put -neweronly *
+exit
+```
+
+Each line is one command. `lcd` sets the local folder, `cd` the remote one.
+`put -neweronly` sends only files that are new or changed since the last
+run. See [`put`](../../reference/commands/put/) for its other switches.
+
+## 3. Run it by hand
+
+<Tabs syncKey="os">
+  <TabItem label="Linux">
+
+```sh
+linscp-cli /script="$HOME/jobs/upload.txt" /log="$HOME/jobs/upload.log"
+echo "exit code: $?"
+```
+
+  </TabItem>
+  <TabItem label="Windows">
+
+```bat
+"C:\Program Files\linscp\linscp-cli.exe" /script=C:\Users\alice\jobs\upload.txt /log=C:\Users\alice\jobs\upload.log
+echo exit code: %ERRORLEVEL%
+```
+
+  </TabItem>
+</Tabs>
+
+linscp-cli prints each command's progress. An exit code of `0` means every
+command succeeded; `1` means one failed and the script stopped there. Open
+the log to see the protocol-level detail behind a failure.
+
+## 4. Wrap it for scheduling
+
+A small shell script keeps the paths in one place and is what you hand to
+cron or a systemd timer:
+
+```sh
+#!/bin/sh
+# ~/jobs/upload.sh
+set -u
+cd "$HOME/jobs" || exit 1
+linscp-cli /script=upload.txt /log=upload.log /loglevel=0
+status=$?
+[ "$status" -eq 0 ] || echo "upload failed with code $status" >&2
+exit "$status"
+```
+
+Make it executable with `chmod +x ~/jobs/upload.sh`. The
+[scheduling](../scheduling/) page shows how to run it every night.
+
+## Let the GUI write the script
+
+linscp can generate the commands for a session or a transfer you set up with
+the mouse:
+
+- For a connection: **Tabs › Generate Session URL/Code...**, or
+  **Manage › Generate Session URL/Code...** in the **Site Manager**.
+- For a transfer: start an upload or download and press **Generate Code...**
+  in the transfer dialog. The result includes the `put` or `get` line with
+  the transfer settings you chose.
+
+On the **Script** tab, choose the **Script file** format to get text you can
+save as `upload.txt` directly. Generated output also includes the host key,
+so the script works without a stored site.
+
+:::note
+The **Batch file** format produces a Windows `.bat` file, even on Linux.
+On Linux, use **Script file** and call it from your own shell wrapper as
+shown above.
+:::

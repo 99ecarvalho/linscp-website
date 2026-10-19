@@ -1,0 +1,26 @@
+{
+  "name": "linscp-website",
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "gen": "node scripts/gen-cli-reference.mjs",
+    "check:cli": "node scripts/gen-cli-reference.mjs --check",
+    "refresh:cli": "node scripts/gen-cli-reference.mjs --refresh",
+    "dev": "npm run gen && astro dev",
+    "build": "npm run gen && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.42.6",
+    "astro": "^7.2.10",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "yaml": "^2.9.1"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.22"
+  }
+}

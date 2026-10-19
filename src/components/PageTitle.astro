@@ -1,0 +1,85 @@
+---
+// Article header: eyebrow, title, one-line deck, meta row, hairline.
+// Starlight's skip link and TOC target this id.
+const PAGE_TITLE_ID = '_top';
+import { getRelease, formatDate } from '../lib/release';
+
+const route = Astro.locals.starlightRoute;
+const { data } = route.entry;
+
+type Entry = (typeof route.sidebar)[number];
+function groupOf(entries: Entry[], label?: string): string | undefined {
+	for (const e of entries) {
+		if (e.type === 'link' && e.isCurrent) return label;
+		if (e.type === 'group') {
+			const hit = groupOf(e.entries, e.label);
+			if (hit) return hit;
+		}
+	}
+}
+
+const eyebrow = data.eyebrow ?? groupOf(route.sidebar) ?? (data.date ? 'News' : undefined);
+const release = data.generated ? await getRelease() : undefined;
+const badge = data.badge ?? (release ? `Generated from linscp ${release.version}` : undefined);
+const updated = route.lastUpdated;
+---
+
+{data.hideTitle ? <h1 id={PAGE_TITLE_ID} class="sr-only">{data.title}</h1> : (
+<header class="ls-title">
+	{eyebrow && <p class="ls-eyebrow">{eyebrow}</p>}
+	<h1 id={PAGE_TITLE_ID}>{data.title}</h1>
+	{data.description && <p class="ls-deck">{data.description}</p>}
+	{
+		(badge || data.date || updated) && (
+			<div class="ls-meta">
+				{badge && <span class="ls-badge">{badge}</span>}
+				{data.date ? (
+					<span>
+						Published <time datetime={data.date.toISOString()}>{formatDate(data.date.toISOString())}</time>
+					</span>
+				) : (
+					updated && (
+						<span>
+							Reviewed <time datetime={updated.toISOString()}>{formatDate(updated.toISOString())}</time>
+						</span>
+					)
+				)}
+			</div>
+		)
+	}
+</header>
+)}
+
+<style>
+	.ls-title {
+		padding-bottom: 1.4rem;
+		border-bottom: 1px solid var(--ls-line);
+		margin-top: 0.5rem;
+	}
+	h1 {
+		margin: 0;
+		font-size: var(--sl-text-h1);
+		line-height: 1.12;
+		font-weight: 750;
+		letter-spacing: -0.035em;
+		color: var(--sl-color-white);
+	}
+	.ls-deck {
+		margin: 0.9rem 0 0;
+		font-size: 1.0625rem;
+		line-height: 1.6;
+		color: var(--ls-muted);
+	}
+	.ls-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 0.85rem;
+		margin-top: 1.1rem;
+		font-size: 0.6875rem;
+		color: var(--ls-muted);
+	}
+	@media (max-width: 50rem) {
+		h1 { font-size: 2rem; }
+	}
+</style>

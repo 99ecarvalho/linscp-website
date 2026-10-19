@@ -1,0 +1,124 @@
+---
+title: Scheduling
+description: Run linscp-cli jobs on a timetable with cron or a systemd timer on Linux, or Task Scheduler on Windows.
+sidebar:
+  order: 6
+related:
+  - manual/scripting/first-script
+  - manual/scripting/sessions-and-credentials
+  - manual/scripting/exit-codes-and-errors
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+A scheduled job runs without you, often as a different user and with a bare
+environment. Prepare the script for that first, then pick a scheduler.
+
+## Before you schedule
+
+- **Run it by hand first**, as the same user the scheduler will use. Fix
+  every prompt it shows: an unknown host key or a missing password will
+  make the scheduled run fail.
+- **Mind whose configuration it reads.** Stored sites and accepted host keys
+  live in that user's `~/.config/linscp/WinSCP.ini`. A job run as `root` or
+  as a service account does not see yours. Either set the site up as that
+  user, or make the script self-contained with a URL and `-hostkey`.
+- **No agent, no desktop.** Jobs started by cron or systemd have no
+  `$SSH_AUTH_SOCK` and no keyring. Use a key file or a password file, as
+  described in [sessions and credentials](../sessions-and-credentials/).
+- **Always add `/nointeractiveinput` and a `/log=`**, so a run that goes wrong
+  stops and leaves a trace.
+
+The examples call the wrapper `~/jobs/upload.sh` from
+[your first automated transfer](../first-script/).
+
+## Linux
+
+<Tabs>
+  <TabItem label="cron">
+
+Edit your crontab with `crontab -e` and add a line. This one runs the job at
+02:30 every night:
+
+```text
+30 2 * * * /usr/bin/flock -n /home/alice/jobs/upload.lock /home/alice/jobs/upload.sh >>/home/alice/jobs/cron.log 2>&1
+```
+
+`flock -n` skips a run while the previous one is still going. cron mails or
+discards the output depending on the system, so redirect it to a file you
+will look at. cron's `PATH` is short; call programs by full path when in
+doubt (`/usr/bin/linscp-cli`).
+
+  </TabItem>
+  <TabItem label="systemd timer">
+
+A user timer needs two files in `~/.config/systemd/user/`.
+
+`upload.service`:
+
+```ini
+[Unit]
+Description=Upload site with linscp-cli
+
+[Service]
+Type=oneshot
+ExecStart=/home/alice/jobs/upload.sh
+```
+
+`upload.timer`:
+
+```ini
+[Unit]
+Description=Nightly site upload
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+Enable it and check the next run:
+
+```sh
+systemctl --user daemon-reload
+systemctl --user enable --now upload.timer
+systemctl --user list-timers upload.timer
+journalctl --user -u upload.service
+```
+
+`Persistent=true` catches up on a run missed while the machine was off.
+A oneshot service never runs twice at once. To run the job while you are
+logged out, enable lingering once with `loginctl enable-linger alice`.
+
+  </TabItem>
+</Tabs>
+
+The exit code of `linscp-cli` becomes the job's result, so
+`systemctl --user status upload.service` shows a failed run as failed.
+
+## Windows
+
+Create the task from an elevated or normal Command Prompt, depending on the
+account it runs as:
+
+```bat
+schtasks /create /tn "linscp upload" /sc daily /st 02:30 ^
+  /tr "\"C:\Program Files\linscp\linscp-cli.exe\" /nointeractiveinput /script=C:\Users\alice\jobs\upload.txt /log=C:\Users\alice\jobs\upload.log"
+```
+
+Or open **Task Scheduler**, choose **Create Task**, and on the **Actions** tab
+enter `linscp-cli.exe` as the program, the switches as arguments, and the job
+folder as **Start in** so relative paths in the script resolve.
+
+Pick **Run whether user is logged on or not** for unattended runs. The task
+then runs in a separate session under that account, so the host key must be
+stored for that account or passed with `-hostkey`.
+
+## Checking that jobs keep working
+
+A schedule can break quietly when a password expires or a host key changes.
+Have the wrapper report failures: send mail from the shell when the exit code
+is not `0`, or let your monitoring watch the log file's age. See
+[exit codes and error handling](../exit-codes-and-errors/).

@@ -1,0 +1,97 @@
+---
+title: Configuration storage
+description: Where linscp keeps sites and settings on Linux and Windows, how to back them up, and how to remove them.
+sidebar:
+  order: 4
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+linscp stores its sites, preferences and remembered host keys in WinSCP's own
+format. A configuration exported from WinSCP therefore works in linscp, and
+the other way round. This page shows where the file lives, how to move or
+back it up, and how to clean up.
+
+## Where settings are stored
+
+<Tabs syncKey="os">
+  <TabItem label="Linux">
+    Linux has no registry, so linscp always uses an INI file named
+    `WinSCP.ini`. It looks in this order:
+
+    1. Beside the `.AppImage` file, when you run the AppImage.
+    2. Beside the `linscp` program itself.
+    3. In your configuration folder: `$XDG_CONFIG_HOME/linscp/WinSCP.ini`,
+       which is usually `~/.config/linscp/WinSCP.ini`. linscp creates the
+       folder when needed.
+
+    The Flatpak sees its own private configuration folder, so there the file
+    is `~/.var/app/io.github._99ecarvalho.linscp/config/linscp/WinSCP.ini`.
+
+    The **Storage** page shows the file in use. Linux offers no other
+    choice there.
+  </TabItem>
+  <TabItem label="Windows">
+    On the **Storage** page choose one of:
+
+    - **Windows registry**: the default. linscp uses the same key as WinSCP,
+      `HKEY_CURRENT_USER\Software\Martin Prikryl\WinSCP 2`, so both programs
+      see the same sites and settings.
+    - **Automatic INI file**: `linscp.ini` beside `linscp.exe`. The portable
+      zip uses this, and if that file exists linscp picks it up by itself.
+    - **Custom INI file**: a path you choose.
+
+    When you switch, linscp moves the current settings to the new place.
+  </TabItem>
+</Tabs>
+
+:::caution
+On Windows, linscp and an installed WinSCP share the registry key. A change
+made in one program shows up in the other. Use an INI file if you want to
+keep them apart.
+:::
+
+## Portable use
+
+To carry linscp with its settings, put an empty `WinSCP.ini` (Linux) or
+`linscp.ini` (Windows) next to the program or AppImage. linscp then writes
+there instead of your home folder.
+
+## A different file for one run
+
+Start linscp or `linscp-cli` with `/ini=` and a path to use that INI file:
+
+```sh
+linscp /ini=/home/alice/work/WinSCP.ini
+```
+
+`/ini=nul` starts with default settings and saves nothing. linscp ignores
+`/ini` when it is started by a link from outside, so a web page cannot point
+it at another file. For one-off overrides of single settings, see
+[raw configuration](../../scripting/raw-configuration/).
+
+## Back up and restore
+
+In the Site Manager, open **Tools**:
+
+- **Export/Backup Configuration...** writes everything to an INI file.
+- **Import/Restore Configuration...** replaces your configuration with one
+  from such a file, including a `WinSCP.ini` exported from WinSCP on
+  Windows.
+
+Stored passwords travel with the file. Protect it like a password store, or
+set a [master password](../../security/master-password/) first.
+
+## Clean up
+
+**Tools › Clean Up...** in the Site Manager lists everything linscp may have
+left on this computer, each with its location: general settings, stored
+sites, caches, the INI file, the random seed file and temporary folders. Check the items to
+remove and confirm. Use it before you hand over or retire a machine.
+
+## Other storage settings
+
+- **Temporary directory**: where edited and dragged files are staged. See
+  [editing remote files](../../editing/editing-remote-files/) for the options.
+- **Random seed file**: where linscp keeps the random data it reuses for SSH
+  between runs.

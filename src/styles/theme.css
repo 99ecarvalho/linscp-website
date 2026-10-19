@@ -1,0 +1,290 @@
+/*
+ * linscp theme for Starlight.
+ * Layout language: white brand bar over a dark navigation bar, airy prose,
+ * mono "eyebrow" labels, hairlines, square corners, one bright and one deep accent.
+ * Colours come from the application icon (blue tile, amber arrows).
+ */
+
+/* ---------- tokens ---------- */
+:root {
+	--ls-ink: #1f2329;          /* nav bar, headings */
+	--ls-text: #2b3036;
+	--ls-muted: #5f6670;
+	--ls-blue: #2f86f0;         /* bright accent: active bars, quote rules */
+	--ls-deep: #1450ad;         /* links, eyebrows, CTAs (AA on white) */
+	--ls-amber: #ffc23d;        /* status dot */
+	--ls-line: #e2e6ea;
+	--ls-paper: #ffffff;
+	--ls-soft: #f4f6f8;         /* code, table head, quotes */
+	--ls-tint: #e8f1fd;         /* current item, badges */
+	--ls-foot: #f9fafb;
+	--ls-nav-text: #e6e9ee;
+	--ls-nav-dim: #b9c0c9;
+
+	--ls-font: Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	--ls-mono: 'JetBrains Mono', 'Cascadia Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+	--ls-bar-h: 4.25rem;        /* brand row */
+	--ls-menu-h: 2.75rem;       /* dark nav row */
+
+	--sl-font: var(--ls-font);
+	--sl-font-mono: var(--ls-mono);
+	--sl-nav-height: calc(var(--ls-bar-h) + var(--ls-menu-h));
+	--sl-nav-pad-y: 0;
+	--sl-line-height: 1.8;
+	--sl-content-width: 46rem;
+	--sl-sidebar-width: 16.5rem;
+	--sl-text-h1: 2.5rem;
+	--sl-text-h2: 1.5625rem;
+	--sl-text-h3: 1.25rem;
+	--sl-text-h4: 1.0625rem;
+}
+
+/* Light (default) */
+:root[data-theme='light'],
+:root:not([data-theme]) {
+	--sl-color-white: var(--ls-ink);
+	--sl-color-gray-1: #2b3036;
+	--sl-color-gray-2: #3d434b;
+	--sl-color-gray-3: var(--ls-muted);
+	--sl-color-gray-4: #8a929c;
+	--sl-color-gray-5: var(--ls-line);
+	--sl-color-gray-6: var(--ls-soft);
+	--sl-color-gray-7: #fbfcfd;
+	--sl-color-black: var(--ls-paper);
+	--sl-color-accent-low: var(--ls-tint);
+	--sl-color-accent: var(--ls-deep);
+	--sl-color-accent-high: #0e3a7a;
+	--sl-color-text: var(--ls-text);
+	--sl-color-text-accent: var(--ls-deep);
+	--sl-color-bg: var(--ls-paper);
+	--sl-color-bg-nav: var(--ls-paper);
+	--sl-color-bg-sidebar: var(--ls-paper);
+	--sl-color-bg-inline-code: var(--ls-soft);
+	--sl-color-hairline: var(--ls-line);
+	--sl-color-hairline-light: var(--ls-line);
+	--sl-color-hairline-shade: var(--ls-line);
+}
+
+/* Dark */
+:root[data-theme='dark'] {
+	--ls-ink: #0e1116;
+	--ls-text: #d5dae1;
+	--ls-muted: #9aa3ad;
+	--ls-blue: #4c9bff;
+	--ls-deep: #8dbcff;
+	--ls-line: #2a3039;
+	--ls-paper: #15181d;
+	--ls-soft: #1c2027;
+	--ls-tint: #1a2a42;
+	--ls-foot: #111418;
+
+	--sl-color-white: #f1f3f6;
+	--sl-color-gray-1: #e3e7ec;
+	--sl-color-gray-2: var(--ls-text);
+	--sl-color-gray-3: var(--ls-muted);
+	--sl-color-gray-4: #6c7580;
+	--sl-color-gray-5: var(--ls-line);
+	--sl-color-gray-6: var(--ls-soft);
+	--sl-color-black: var(--ls-paper);
+	--sl-color-accent-low: var(--ls-tint);
+	--sl-color-accent: var(--ls-blue);
+	--sl-color-accent-high: var(--ls-deep);
+	--sl-color-text: var(--ls-text);
+	--sl-color-text-accent: var(--ls-deep);
+	--sl-color-bg: var(--ls-paper);
+	--sl-color-bg-nav: var(--ls-paper);
+	--sl-color-bg-sidebar: var(--ls-paper);
+	--sl-color-bg-inline-code: var(--ls-soft);
+	--sl-color-hairline: var(--ls-line);
+	--sl-color-hairline-light: var(--ls-line);
+	--sl-color-hairline-shade: var(--ls-line);
+}
+
+@media (max-width: 50rem) {
+	:root {
+		--ls-bar-h: 3.5rem;
+		--ls-menu-h: 2.5rem;
+	}
+}
+
+/* ---------- shared bits ---------- */
+.ls-eyebrow {
+	font: 600 0.625rem/1.5 var(--ls-mono);
+	letter-spacing: 0.17em;
+	text-transform: uppercase;
+	color: var(--ls-deep);
+	margin: 0 0 0.75rem;
+}
+.ls-badge {
+	display: inline-block;
+	font: 600 0.625rem/1 var(--ls-mono);
+	letter-spacing: 0.04em;
+	padding: 0.45rem 0.55rem;
+	background: var(--ls-tint);
+	color: var(--ls-deep);
+}
+.ls-arrow::after { content: ' ↗'; }
+.ls-cta {
+	display: inline-flex;
+	gap: 0.9rem;
+	align-items: center;
+	font-size: 0.8125rem;
+	font-weight: 650;
+	color: var(--ls-deep);
+	text-decoration: none;
+}
+.ls-cta:hover { color: var(--sl-color-white); text-decoration: underline; }
+.ls-cta::after { content: '↗'; font-size: 0.75em; }
+.ls-button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.7rem 1.1rem;
+	background: var(--ls-deep);
+	color: #fff;
+	font-weight: 650;
+	font-size: 0.875rem;
+	text-decoration: none;
+	border: 1px solid var(--ls-deep);
+}
+:root[data-theme='dark'] .ls-button { background: var(--ls-blue); border-color: var(--ls-blue); color: #08111f; }
+.ls-button:hover { filter: brightness(1.1); }
+.ls-button.secondary { background: transparent; color: var(--ls-deep); }
+
+/* Square corners everywhere. */
+.sl-markdown-content :is(pre, code, img, table, .expressive-code *),
+.starlight-aside,
+.sl-link-card,
+.card,
+site-search button,
+starlight-theme-select select { border-radius: 0 !important; }
+
+/* ---------- header frame ---------- */
+.page > header.header {
+	padding: 0;
+	border-bottom: 0;
+}
+starlight-menu-button button {
+	top: calc((var(--ls-bar-h) - var(--sl-menu-button-size)) / 2);
+	border-radius: 0;
+}
+
+/* ---------- sidebar ---------- */
+.sidebar-content { padding-top: 1.75rem; }
+.sidebar-content::before {
+	content: 'LINSCP MANUAL';
+	font: 600 0.5625rem/1.6 var(--ls-mono);
+	letter-spacing: 0.18em;
+	color: var(--ls-muted);
+	padding-bottom: 0.75rem;
+	border-bottom: 1px solid var(--ls-line);
+}
+.sidebar-content ul.top-level > li > a {
+	font-weight: 650;
+	color: var(--ls-deep);
+	padding-inline: 0;
+}
+.sidebar-content .group-label .large {
+	font-size: 0.75rem;
+	font-weight: 700;
+	color: var(--sl-color-white);
+}
+.sidebar-content summary { padding-inline: 0; }
+.sidebar-content ul ul { --sl-color-hairline-light: var(--ls-line); }
+.sidebar-content a {
+	font-size: 0.8125rem;
+	line-height: 1.45;
+	color: var(--ls-muted);
+	border-radius: 0;
+	padding: 0.35rem 0.6rem;
+}
+.sidebar-content a:hover { color: var(--ls-deep); }
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover {
+	background: var(--ls-tint);
+	color: var(--ls-deep);
+	font-weight: 650;
+	box-shadow: inset 2px 0 0 var(--ls-blue);
+}
+
+/* ---------- right TOC ---------- */
+.right-sidebar { border-inline-start: 1px solid var(--ls-line); }
+.right-sidebar-panel h2 {
+	font: 600 0.5625rem/1.6 var(--ls-mono);
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--ls-muted);
+}
+.right-sidebar-panel a {
+	font-size: 0.75rem;
+	color: #6a727c;
+}
+:root[data-theme='dark'] .right-sidebar-panel a { color: var(--ls-muted); }
+.right-sidebar-panel a:hover { color: var(--ls-deep); text-decoration: underline; }
+.right-sidebar-panel a[aria-current='true'] { color: var(--ls-deep); font-weight: 600; }
+
+/* ---------- prose ---------- */
+.sl-markdown-content { font-size: 1rem; }
+.sl-markdown-content :is(h2, h3) { letter-spacing: -0.02em; font-weight: 700; }
+.sl-markdown-content h2 { margin-top: 2.2rem; }
+.sl-markdown-content a:not(:where(.not-content *)) {
+	color: var(--ls-deep);
+	text-underline-offset: 3px;
+}
+.sl-markdown-content :not(pre) > code {
+	font-size: 0.85em;
+	padding: 0.12em 0.3em;
+	background: var(--ls-soft);
+	border: 0;
+}
+.sl-markdown-content blockquote {
+	border-inline-start: 3px solid var(--ls-blue);
+	background: var(--ls-soft);
+	padding: 1rem 1.25rem;
+	font-style: normal;
+}
+.sl-markdown-content table {
+	font-size: 0.8125rem;
+	line-height: 1.65;
+	display: table;
+	width: 100%;
+}
+.sl-markdown-content :is(th, td) {
+	border: 0;
+	border-bottom: 1px solid var(--ls-line);
+	padding: 0.7rem 0.6rem;
+	vertical-align: top;
+}
+.sl-markdown-content th {
+	background: var(--ls-soft);
+	font-size: 0.6875rem;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+.sl-markdown-content li + li { margin-top: 0.4rem; }
+.starlight-aside { border-width: 0 0 0 3px; }
+
+/* Title block draws its own hairline. */
+.content-panel + .content-panel { border-top: 0; }
+.content-panel:has(.ls-title) { padding-bottom: 0; }
+
+/* Flat, smaller pagination and edit link */
+.pagination-links a {
+	border-radius: 0;
+	box-shadow: none;
+	border: 1px solid var(--ls-line);
+	font-size: 0.75rem;
+	padding: 0.8rem 1rem;
+}
+.pagination-links .link-title { font-size: 1rem; font-weight: 650; color: var(--sl-color-white); }
+.ls-page-tools a { font-size: 0.8125rem; }
+.pagination-links a:hover { border-color: var(--ls-blue); }
+
+/* ---------- splash pages ---------- */
+[data-has-hero] .sl-markdown-content,
+.ls-splash { max-width: 72rem; }
+
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+}

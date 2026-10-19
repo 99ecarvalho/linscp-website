@@ -1,0 +1,11 @@
+{
+  "name": "linscp",
+  "short_name": "linscp",
+  "icons": [
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "theme_color": "#1f2329",
+  "background_color": "#ffffff",
+  "display": "browser"
+}

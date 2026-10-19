@@ -1,0 +1,111 @@
+---
+title: linscp and WinSCP
+description: What linscp shares with WinSCP, what works differently on Linux, and what is not offered.
+sidebar:
+  order: 6
+related:
+  - manual/getting-started/introduction
+  - manual/getting-started/install-windows
+  - manual/getting-started/install-linux
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+linscp is built from WinSCP's source. The part that talks to servers is
+WinSCP's own code, compiled unchanged; the windows and dialogs are rewritten in
+Qt. If you know WinSCP, you already know most of linscp. This page lists where
+the two meet and where they part.
+
+## What stays the same
+
+- **Protocols and behaviour.** Connections, transfers, synchronization and
+  error messages come from WinSCP's core (version 6.7.1 in linscp 0.6.1).
+- **Menus and dialogs.** linscp keeps WinSCP's captions, menu order and most
+  keyboard shortcuts, in both the Commander and Explorer layouts.
+- **Scripts.** `linscp-cli` runs WinSCP scripts with the same commands and
+  switches. See [scripting with linscp-cli](../../scripting/introduction/).
+- **Session URLs** such as `sftp://alice@example.com/` open a session, as in
+  WinSCP.
+- **Translations.** Messages from the core use WinSCP's translators' work. See
+  [translations](../../about/translations/).
+
+## Program names
+
+| WinSCP | linscp |
+|---|---|
+| `WinSCP.exe` | `linscp` (`linscp.exe` on Windows) |
+| `WinSCP.com` | `linscp-cli` |
+
+## Shared settings
+
+<Tabs syncKey="os">
+  <TabItem label="Linux">
+    Settings live in `~/.config/linscp/WinSCP.ini`, in WinSCP's INI format.
+    To bring your sites over from Windows, export the configuration from
+    WinSCP as an INI file and copy it to that path. WinSCP itself never reads
+    this file.
+  </TabItem>
+  <TabItem label="Windows">
+    An installed linscp uses WinSCP's registry key,
+    `HKEY_CURRENT_USER\Software\Martin Prikryl\WinSCP 2`. Both programs see
+    the same sites, preferences and remembered host keys, and a change in one
+    shows up in the other. The portable zip keeps its own `linscp.ini`
+    instead.
+  </TabItem>
+</Tabs>
+
+:::caution
+linscp is a pre-release. Back up your WinSCP configuration before you run
+linscp against it.
+:::
+
+## Different on Linux
+
+- **SSH agent.** There is no bundled Pageant. linscp talks to the agent named
+  in `$SSH_AUTH_SOCK`, usually `ssh-agent` or your desktop's key manager.
+- **PuTTYgen and Pageant.** The **Run PuTTYgen** and **Run Pageant** tools
+  work only if those programs are on your `PATH`. **Edit in PuTTY** and
+  **Generate New Key Pair with PuTTYgen** are Windows only. Create keys with
+  `ssh-keygen`, and convert them with `linscp-cli /keygen`; see
+  [SSH keys](../../connecting/ssh-keys/).
+- **WebDAV sign-in.** Integrated Windows authentication (SSPI) and GSSAPI
+  are not available for WebDAV.
+- **TLS certificates.** linscp checks a server's chain against the system's
+  trusted roots. It does not download a missing intermediate certificate and
+  does not check revocation, so a server that omits its intermediate is
+  refused.
+- **Sort order.** File lists may order names with accents or punctuation
+  differently from WinSCP.
+- **File names.** Names that differ only in letter case are separate files,
+  as Linux treats them.
+- **Desktop integration.** The **Send To** shortcut, the jump list and the
+  drag-and-drop shell extension exist only on Windows. On Linux, linscp
+  registers as the handler for `sftp://` and similar links through its
+  desktop file; see [Linux desktop integration](../../integration/linux-desktop/).
+- **Extensions.** Custom command extensions are mostly PowerShell scripts
+  built on WinSCP's .NET assembly, so they run only on Windows.
+
+## Different everywhere
+
+- **Links from outside are treated with more suspicion.** When a session URL
+  arrives from a browser or another program, linscp ignores settings in it
+  that could run code or load libraries, such as a custom GSSAPI library or
+  PuTTY settings. WinSCP accepts some of these.
+- **Updates.** **Help › Check for Updates** asks linscp's GitHub releases.
+  Automatic checks are off until you turn them on. See [privacy](../../about/privacy/).
+- **Help pages.** **Help › Contents** still opens WinSCP's online
+  documentation, which matches the interface but not linscp's Linux
+  differences. The other **Help** entries open linscp's GitHub pages.
+
+## Not offered
+
+- WinSCP's tips, usage statistics and the donors' automatic updates.
+- The COM interface for scripting from other Windows programs.
+- An MSI package, a Microsoft Store listing or an rpm package.
+- Code-signed binaries (planned).
+
+## Support
+
+linscp is not supported by the WinSCP project. Report linscp problems on
+[linscp's issue tracker](https://github.com/99ecarvalho/linscp/issues), not on
+WinSCP's forum. See [getting help](../../troubleshooting/reporting-bugs/).
