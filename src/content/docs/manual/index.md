@@ -5,7 +5,7 @@ eyebrow: Manual
 ---
 
 linscp is a file transfer client for Linux and Windows, created and maintained
-by [Eduardo Correia](https://github.com/99ecarvalho). This manual explains how
+by [Eduardo Correia](https://www.apliant.com.br/eduardo). This manual explains how
 to install it, connect to servers, work with remote files and automate transfers
 with `linscp-cli`.
 

@@ -53,7 +53,7 @@ linscp runs on 64-bit Linux and on Windows 10 and 11 (x64). Version 0.7.0 is
 the first official release; see [what's new](../../about/whats-new/).
 
 linscp is free software under the GNU GPL, version 3, created and maintained by
-[Eduardo Correia](https://github.com/99ecarvalho). It is a young, independent
+[Eduardo Correia](https://www.apliant.com.br/eduardo). It is a young, independent
 project funded by its users; see [support linscp](../../../donate/).
 
 Its transfer engine comes from WinSCP, with thanks; the WinSCP authors are not

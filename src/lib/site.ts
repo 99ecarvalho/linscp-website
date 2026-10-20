@@ -1,7 +1,9 @@
 // Site-wide navigation and URL helpers.
 
 export const AUTHOR = 'Eduardo Correia';
-export const AUTHOR_URL = 'https://github.com/99ecarvalho';
+export const AUTHOR_URL = 'https://www.apliant.com.br/eduardo';
+export const AUTHOR_GITHUB = 'https://github.com/99ecarvalho';
+export const AUTHOR_LINKEDIN = 'https://www.linkedin.com/in/c99-eduardo';
 export const CONTACT_EMAIL = 'eduardo@linscp.org';
 export const SECURITY_EMAIL = 'security@linscp.org';
 export const SPONSOR_URL = 'https://github.com/sponsors/99ecarvalho';

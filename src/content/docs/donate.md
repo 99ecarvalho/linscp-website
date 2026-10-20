@@ -6,7 +6,7 @@ tableOfContents: false
 ---
 
 linscp is free and open source, with no ads and no paid edition. It is a young
-project, created and maintained by [Eduardo Correia](https://github.com/99ecarvalho)
+project, created and maintained by [Eduardo Correia](https://www.apliant.com.br/eduardo)
 as an independent effort. Every sponsor makes the next release come sooner.
 
 <a class="ls-button" href="https://github.com/sponsors/99ecarvalho">Sponsor linscp on GitHub</a>

@@ -4,7 +4,8 @@
 import { getEntry } from 'astro:content';
 import Pagination from 'virtual:starlight/components/Pagination';
 import logo from '../assets/linscp.svg';
-import { href, AUTHOR, AUTHOR_URL, CONTACT_EMAIL } from '../lib/site';
+import { Icon } from '@astrojs/starlight/components';
+import { href, AUTHOR, AUTHOR_URL, AUTHOR_GITHUB, AUTHOR_LINKEDIN, CONTACT_EMAIL } from '../lib/site';
 
 const route = Astro.locals.starlightRoute;
 const { data } = route.entry;
@@ -70,7 +71,7 @@ const year = new Date().getFullYear();
 		<img src={logo.src} alt="" width="22" height="22" />
 		<span translate="no">linscp</span>
 	</a>
-	<p>Free software, created and maintained by <a href={AUTHOR_URL}>{AUTHOR}</a>. <a href={href('/donate/')}>Sponsor the project</a>.</p>
+	<p>Free software, created and maintained by <a href={AUTHOR_URL}>{AUTHOR}</a><a class="ls-foot-icon" href={AUTHOR_GITHUB} aria-label="GitHub" title="GitHub"><Icon name="github" size="0.9rem" /></a><a class="ls-foot-icon" href={AUTHOR_LINKEDIN} aria-label="LinkedIn" title="LinkedIn"><Icon name="linkedin" size="0.9rem" /></a>. <a href={href('/donate/')}>Sponsor the project</a>.</p>
 	<nav class="ls-foot-links" aria-label="Site information">
 		<a href={href('/download/')}>Download</a>
 		<a href={href('/manual/')}>Manual</a>
@@ -151,6 +152,7 @@ const year = new Date().getFullYear();
 	}
 	.ls-footer p { margin: 0; }
 	.ls-footer p a { color: var(--ls-deep); }
+	.ls-foot-icon { display: inline-flex; vertical-align: -0.15em; margin-inline-start: 0.35rem; }
 	.ls-foot-links {
 		display: flex;
 		flex-wrap: wrap;
