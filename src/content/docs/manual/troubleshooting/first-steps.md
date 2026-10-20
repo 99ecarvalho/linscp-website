@@ -40,10 +40,8 @@ settings, or linscp itself. These checks tell you which one you face.
    Windows, try the same site there. Mention the result when you ask for
    help.
 
-:::note
-**Help › Contents** still opens WinSCP's online documentation. Most of it
-applies, but this manual describes what linscp actually does on Linux and
-Windows.
+:::tip
+Press <kbd>F1</kbd> in linscp (**Help › Contents**) to open this manual.
 :::
 
 ## Record a session log

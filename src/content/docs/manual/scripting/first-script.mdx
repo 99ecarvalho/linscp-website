@@ -104,8 +104,9 @@ On the **Script** tab, choose the **Script file** format to get text you can
 save as `upload.txt` directly. Generated output also includes the host key,
 so the script works without a stored site.
 
-:::note
-The **Batch file** format produces a Windows `.bat` file, even on Linux.
-On Linux, use **Script file** and call it from your own shell wrapper as
-shown above.
+:::tip
+On Linux, choose the **Shell script** format: a `#!/bin/sh` script that runs
+`linscp-cli` with each command single-quoted on its command line, so the shell
+expands nothing in them. Its Windows counterpart is **Batch file**.
+**PowerShell script** is offered on both.
 :::
