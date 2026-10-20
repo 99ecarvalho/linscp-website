@@ -98,9 +98,9 @@ touch /media/alice/stick/WinSCP.ini
 
 linscp then stores everything in that file and leaves `~/.config` alone.
 
-:::caution
-This is a pre-release. Before you point linscp at an existing WinSCP
-configuration, make a copy of it.
+:::tip
+If you copy an existing WinSCP configuration into linscp, keep the original
+as well. linscp updates the file as you work.
 :::
 
 ## Next step

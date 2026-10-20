@@ -66,10 +66,10 @@ saved in WinSCP therefore show up in linscp right away, and changes made in
 one program appear in the other.
 
 :::caution
-Because the two programs share one configuration, a mistake or a bug in this
-pre-release can affect your WinSCP setup too. Before the first run, back up
-WinSCP's configuration (in WinSCP: **Tools › Export/Backup Configuration**),
-or use the portable zip to keep linscp separate.
+Because the two programs share one configuration, a change made in linscp also
+changes WinSCP's setup. To keep them separate, use the portable zip. To be safe
+before the first run, export WinSCP's configuration (in WinSCP:
+**Tools › Export/Backup Configuration**).
 :::
 
 [linscp and WinSCP](../linscp-and-winscp/) lists what else the two have in

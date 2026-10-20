@@ -49,9 +49,8 @@ same settings on both systems.
 
 ## Platforms and status
 
-linscp runs on 64-bit Linux and on Windows 10 and 11 (x64). Every release so
-far is a pre-release: the core is mature, but the interface around it is new.
-Back up your settings before you try it on a setup you depend on.
+linscp runs on 64-bit Linux and on Windows 10 and 11 (x64). Version 0.7.0 is
+the first official release; see [what's new](../../about/whats-new/).
 
 linscp is free software under the GNU GPL, version 3, created and maintained by
 [Eduardo Correia](https://github.com/99ecarvalho). It is a young, independent

@@ -28,10 +28,11 @@ Get-FileHash .\linscp-*-setup.exe
 The Windows builds are not code-signed yet, so SmartScreen may warn the first
 time you run them.
 
-## Before you upgrade from WinSCP
+## If you also use WinSCP
 
-linscp reads and writes the same kind of configuration as WinSCP. While linscp is
-a pre-release, back up your WinSCP settings before you point linscp at them.
+linscp uses the same configuration as WinSCP, so both programs see the same
+sites and settings. To keep them apart, use the portable package. See
+[configuration storage](../manual/preferences/storage-and-config/).
 
 ## Build it yourself
 
