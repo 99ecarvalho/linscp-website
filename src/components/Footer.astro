@@ -5,7 +5,9 @@ import { getEntry } from 'astro:content';
 import Pagination from 'virtual:starlight/components/Pagination';
 import logo from '../assets/linscp.svg';
 import { Icon } from '@astrojs/starlight/components';
-import { href, AUTHOR, AUTHOR_URL, AUTHOR_GITHUB, AUTHOR_LINKEDIN, CONTACT_EMAIL } from '../lib/site';
+import { Image } from 'astro:assets';
+import { href, AUTHOR, AUTHOR_URL, AUTHOR_GITHUB, AUTHOR_LINKEDIN, APLIANT_URL, CONTACT_EMAIL } from '../lib/site';
+import apliantLogo from '../assets/author/apliant.png';
 
 const route = Astro.locals.starlightRoute;
 const { data } = route.entry;
@@ -71,7 +73,7 @@ const year = new Date().getFullYear();
 		<img src={logo.src} alt="" width="22" height="22" />
 		<span translate="no">linscp</span>
 	</a>
-	<p>Free software, created and maintained by <a href={AUTHOR_URL}>{AUTHOR}</a><a class="ls-foot-icon" href={AUTHOR_GITHUB} aria-label="GitHub" title="GitHub"><Icon name="github" size="0.9rem" /></a><a class="ls-foot-icon" href={AUTHOR_LINKEDIN} aria-label="LinkedIn" title="LinkedIn"><Icon name="linkedin" size="0.9rem" /></a>. <a href={href('/donate/')}>Sponsor the project</a>.</p>
+	<p>Free software, created and maintained by <a href={AUTHOR_URL}>{AUTHOR}</a><a class="ls-foot-icon" href={APLIANT_URL} aria-label="Apliant" title="Apliant"><Image src={apliantLogo} alt="" width={14} height={14} densities={[1, 2]} /></a><a class="ls-foot-icon" href={AUTHOR_GITHUB} aria-label="GitHub" title="GitHub"><Icon name="github" size="0.9rem" /></a><a class="ls-foot-icon" href={AUTHOR_LINKEDIN} aria-label="LinkedIn" title="LinkedIn"><Icon name="linkedin" size="0.9rem" /></a>. <a href={href('/donate/')}>Sponsor the project</a>.</p>
 	<nav class="ls-foot-links" aria-label="Site information">
 		<a href={href('/download/')}>Download</a>
 		<a href={href('/manual/')}>Manual</a>

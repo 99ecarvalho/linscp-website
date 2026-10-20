@@ -2,6 +2,7 @@
 
 export const AUTHOR = 'Eduardo Correia';
 export const AUTHOR_URL = 'https://www.apliant.com.br/eduardo';
+export const APLIANT_URL = 'https://www.apliant.com.br';
 export const AUTHOR_GITHUB = 'https://github.com/99ecarvalho';
 export const AUTHOR_LINKEDIN = 'https://www.linkedin.com/in/c99-eduardo';
 export const CONTACT_EMAIL = 'eduardo@linscp.org';
