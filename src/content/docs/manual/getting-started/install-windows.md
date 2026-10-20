@@ -28,7 +28,7 @@ files it published, so you can compare the file name and size.
 
 ## Use the setup program
 
-1. Run `linscp-0.7.0-setup.exe`.
+1. Run `linscp-0.7.1-setup.exe`.
 2. Choose whether to install for all users (needs administrator rights) or only
    for you.
 3. Choose the setup type. **Full** includes the translations of the interface;
@@ -50,7 +50,7 @@ removes the link handler and the `PATH` entry.
 
 ## Use the portable zip
 
-1. Unzip `linscp-0.7.0-portable.zip` into a folder you can write to, such as
+1. Unzip `linscp-0.7.1-portable.zip` into a folder you can write to, such as
    a USB stick.
 2. Run `linscp.exe` from that folder.
 

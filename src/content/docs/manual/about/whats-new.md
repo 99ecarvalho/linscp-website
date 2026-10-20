@@ -13,6 +13,10 @@ This page covers the newest release. Every earlier version, with its full
 notes and downloads, is on
 [GitHub releases](https://github.com/99ecarvalho/linscp/releases).
 
+## linscp 0.7.1
+
+Released on 20 October 2026. A maintenance release with CI clean-up.
+
 ## linscp 0.7.0
 
 Released on 19 October 2026 — the first official release. After a run of 0.x

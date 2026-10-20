@@ -33,7 +33,7 @@ compatible services. See [choosing a protocol](../../connecting/protocols/).
 
 ### Is linscp finished?
 
-Not quite: it is an early release (version 0.7.0). Most of WinSCP's features
+Not quite: it is an early release (version 0.7.1). Most of WinSCP's features
 work; the remaining differences are listed in
 [linscp and WinSCP](../../getting-started/linscp-and-winscp/).
 

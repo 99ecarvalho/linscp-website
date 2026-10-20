@@ -26,7 +26,7 @@ To see your glibc version, run `ldd --version`.
 ## Install the .deb
 
 ```sh
-sudo apt install ./linscp_0.7.0_amd64.deb
+sudo apt install ./linscp_0.7.1_amd64.deb
 ```
 
 The `./` matters: without it, `apt` searches its repositories instead of the
@@ -39,8 +39,8 @@ To remove it: `sudo apt remove linscp`.
 ## Run the AppImage
 
 ```sh
-chmod +x linscp-0.7.0-x86_64.AppImage
-./linscp-0.7.0-x86_64.AppImage
+chmod +x linscp-0.7.1-x86_64.AppImage
+./linscp-0.7.1-x86_64.AppImage
 ```
 
 The AppImage starts the graphical program. It does not add itself to the
@@ -51,7 +51,7 @@ If the system has no FUSE support, the AppImage refuses to start. Add
 `--appimage-extract-and-run` to the command to run it without FUSE.
 
 `linscp-cli` is inside the image. Run
-`./linscp-0.7.0-x86_64.AppImage --appimage-extract` once, and find it at
+`./linscp-0.7.1-x86_64.AppImage --appimage-extract` once, and find it at
 `squashfs-root/usr/lib/linscp/linscp-cli`.
 
 ## Install the Flatpak
@@ -61,7 +61,7 @@ yet, add it first:
 
 ```sh
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --user linscp-0.7.0.flatpak
+flatpak install --user linscp-0.7.1.flatpak
 flatpak run io.github._99ecarvalho.linscp
 ```
 

@@ -49,7 +49,7 @@ same settings on both systems.
 
 ## Platforms and status
 
-linscp runs on 64-bit Linux and on Windows 10 and 11 (x64). Version 0.7.0 is
+linscp runs on 64-bit Linux and on Windows 10 and 11 (x64). Version 0.7.1 is
 the first official release; see [what's new](../../about/whats-new/).
 
 linscp is free software under the GNU GPL, version 3, created and maintained by
