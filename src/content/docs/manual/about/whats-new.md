@@ -11,8 +11,14 @@ related:
 
 This page covers the newest release. Every earlier version, with its full
 notes and downloads, is on
-[GitHub releases](https://github.com/99ecarvalho/linscp/releases). All releases
-so far are pre-releases.
+[GitHub releases](https://github.com/99ecarvalho/linscp/releases).
+
+## linscp 0.7.0
+
+Released on 19 October 2026 — the first official release. After a run of 0.x
+previews, linscp is out of pre-release. This release moves the About dialog and
+in-app links onto linscp.org and adds a Report a Security Issue item to the Help
+menu, with small fixes and polish.
 
 ## linscp 0.6.1
 
