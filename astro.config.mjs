@@ -10,6 +10,16 @@ const base = process.env.BASE_PATH ?? '/';
 // Base without a trailing slash, for building asset paths: '' at the root.
 const prefix = base.replace(/\/$/, '');
 
+// Visitor statistics: the project's self-hosted Umami (cookieless, no personal
+// data). The tag is only added when a website ID is set, and only counts visits
+// on linscp.org; browsers sending Do Not Track are not counted.
+const umami = {
+	src: 'https://stats.apliant.com.br/script.js',
+	// Public by design: it appears in every page. Set UMAMI_WEBSITE_ID='' to build without it.
+	websiteId: process.env.UMAMI_WEBSITE_ID ?? 'f1028b49-1601-47e0-9496-d7a5e2d163c5',
+	domains: 'linscp.org',
+};
+
 export default defineConfig({
 	site,
 	base,
@@ -26,6 +36,18 @@ export default defineConfig({
 				{ tag: 'link', attrs: { rel: 'apple-touch-icon', href: `${prefix}/apple-touch-icon.png`, sizes: '180x180' } },
 				{ tag: 'link', attrs: { rel: 'manifest', href: `${prefix}/site.webmanifest` } },
 				{ tag: 'meta', attrs: { name: 'theme-color', content: '#1f2329' } },
+				...(umami.websiteId
+					? [{
+							tag: 'script',
+							attrs: {
+								defer: true,
+								src: umami.src,
+								'data-website-id': umami.websiteId,
+								'data-domains': umami.domains,
+								'data-do-not-track': 'true',
+							},
+						}]
+					: []),
 			],
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/99ecarvalho/linscp' },

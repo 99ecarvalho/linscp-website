@@ -70,5 +70,16 @@ and "shut down" actions after the queue finishes.
 
 ## Privacy of the website
 
-This manual is a static site hosted on GitHub Pages. GitHub may log visits as
-described in its own privacy statement. The site sets no cookies of its own.
+This website is a static site hosted on GitHub Pages. GitHub may log visits as
+described in its own privacy statement.
+
+To see which pages are read, the site counts visits with
+[Umami](https://umami.is/), running on the project's own server
+(`stats.apliant.com.br`). It records the page, the referring site, and the
+browser, operating system, screen size and country of each visit. It sets no
+cookies, stores no IP addresses and builds no profile of you. Nothing is sold
+or shared with anyone.
+
+If your browser sends a *Do Not Track* signal, your visits are not counted.
+Blocking `stats.apliant.com.br` in your browser or ad blocker also stops it;
+the site works the same either way.
