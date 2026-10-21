@@ -26,7 +26,9 @@ back it up, and how to clean up.
        folder when needed.
 
     The Flatpak sees its own private configuration folder, so there the file
-    is `~/.var/app/io.github._99ecarvalho.linscp/config/linscp/WinSCP.ini`.
+    is `~/.var/app/org.linscp.linscp/config/linscp/WinSCP.ini`. The first
+    two places do not apply to it. See
+    [the Flatpak's configuration](#the-flatpaks-configuration).
 
     The **Storage** page shows the file in use. Linux offers no other
     choice there.
@@ -56,6 +58,36 @@ keep them apart.
 To carry linscp with its settings, put an empty `WinSCP.ini` (Linux) or
 `linscp.ini` (Windows) next to the program or AppImage. linscp then writes
 there instead of your home folder.
+
+## The Flatpak's configuration
+
+A Flatpak install keeps its configuration in
+`~/.var/app/org.linscp.linscp/config/linscp/WinSCP.ini`. It does not share
+settings with a `.deb` or AppImage install of linscp on the same computer:
+each starts with its own sites and preferences.
+
+To take your settings to the Flatpak, quit linscp and copy the file over:
+
+```sh
+mkdir -p ~/.var/app/org.linscp.linscp/config/linscp
+cp ~/.config/linscp/WinSCP.ini ~/.var/app/org.linscp.linscp/config/linscp/
+```
+
+Copy it the other way to go back. To have both installs use one file
+instead, start the Flatpak with `/ini=` and the path of the other file. The
+sandbox can read and write anything in your home folder:
+
+```sh
+flatpak run org.linscp.linscp /ini="$HOME/.config/linscp/WinSCP.ini"
+```
+
+Do not run both at once on the same file. The Flatpak never reads a
+`WinSCP.ini` beside its program, which lives in the read-only sandbox.
+
+Flatpak bundles of linscp 0.7.1 and earlier used another application ID and
+kept their file in `~/.var/app/io.github._99ecarvalho.linscp/config/linscp/`.
+Copy it from there the same way, then remove the old Flatpak with
+`flatpak uninstall io.github._99ecarvalho.linscp`.
 
 ## A different file for one run
 

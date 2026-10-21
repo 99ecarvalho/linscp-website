@@ -22,7 +22,7 @@ local paths.
 
 - **Debian package**: `linscp-cli` is installed in `/usr/bin`, next to `linscp`.
 - **Flatpak**: run it as
-  `flatpak run --command=linscp-cli io.github._99ecarvalho.linscp`.
+  `flatpak run --command=linscp-cli org.linscp.linscp`.
 - **Windows**: `linscp-cli.exe` sits in the linscp installation folder,
   beside `linscp.exe`.
 

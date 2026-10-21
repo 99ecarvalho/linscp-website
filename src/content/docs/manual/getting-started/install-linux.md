@@ -62,11 +62,11 @@ yet, add it first:
 ```sh
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user linscp-0.7.1.flatpak
-flatpak run io.github._99ecarvalho.linscp
+flatpak run org.linscp.linscp
 ```
 
 Flatpak fetches the runtime on the first install. For the console client, run
-`flatpak run --command=linscp-cli io.github._99ecarvalho.linscp`.
+`flatpak run --command=linscp-cli org.linscp.linscp`.
 
 The sandbox lets linscp reach the network and your home directory. Files
 outside your home directory, such as `/srv` or a mounted disk under `/media`,
@@ -80,7 +80,11 @@ linscp keeps all settings, including stored sites, in one INI file named
 | Package | File |
 |---|---|
 | `.deb`, AppImage | `~/.config/linscp/WinSCP.ini` (or `$XDG_CONFIG_HOME/linscp/`) |
-| Flatpak | `~/.var/app/io.github._99ecarvalho.linscp/config/linscp/WinSCP.ini` |
+| Flatpak | `~/.var/app/org.linscp.linscp/config/linscp/WinSCP.ini` |
+
+The Flatpak does not share settings with a `.deb` or AppImage install. See
+[configuration storage](../../preferences/storage-and-config/#the-flatpaks-configuration)
+to copy them over.
 
 The file uses WinSCP's format, so a `WinSCP.ini` exported from WinSCP on
 Windows works when you copy it into place. See

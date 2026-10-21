@@ -39,7 +39,7 @@ All three Linux packages share one install layout, made by `cmake --install`:
 | `share/icons/hicolor/`, `share/metainfo/` | Icons and AppStream metadata |
 | `share/doc/linscp/` | linscp's licence and those of every bundled component |
 
-The application ID is `io.github._99ecarvalho.linscp`. The install rules are
+The application ID is `org.linscp.linscp`. The install rules are
 in `port/packaging/CMakeLists.txt`.
 
 ## The .deb
@@ -71,7 +71,7 @@ python3 port/tools/build_flatpak.py
 flatpak install --user build/flatpak/packages/linscp-<version>.flatpak
 ```
 
-The manifest, `port/packaging/flatpak/io.github._99ecarvalho.linscp.yml`,
+The manifest, `port/packaging/flatpak/org.linscp.linscp.yml`,
 builds the current checkout on KDE's runtime with the freedesktop LLVM
 extension for clang. The script installs the runtime, SDK and extension from
 Flathub for your user if they are missing. The manifest also lists the
