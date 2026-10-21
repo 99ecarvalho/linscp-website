@@ -1,0 +1,25 @@
+# Updates for the site's npm packages and GitHub Actions. A release is
+# proposed only once it is 14 days old (cooldown), so that a compromised or
+# broken release has time to be noticed and withdrawn first. Each update is a
+# pull request to review; nothing is merged on its own.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 14
+    groups:
+      npm:
+        patterns: ["*"]
+    commit-message:
+      prefix: chore
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 14
+    commit-message:
+      prefix: ci
