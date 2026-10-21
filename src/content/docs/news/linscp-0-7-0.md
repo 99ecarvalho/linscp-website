@@ -1,6 +1,6 @@
 ---
 title: linscp 0.7.0 — the first official release
-description: linscp leaves pre-release. One file manager, the same on Linux and Windows.
+description: linscp leaves pre-release. One file transfer app, the same on Linux and Windows.
 date: 2026-10-19
 badge: Release
 template: splash
@@ -8,7 +8,7 @@ tableOfContents: false
 ---
 
 linscp 0.7.0 is here — the first official release. After a run of 0.x previews,
-linscp is out of pre-release: a fast, friendly file manager for moving files
+linscp is out of pre-release: a fast, friendly app for moving files
 between your computer and remote servers, with the same experience on Linux and
 Windows.
 
