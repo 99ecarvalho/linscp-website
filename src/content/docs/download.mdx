@@ -10,10 +10,18 @@ import Downloads from '../../components/Downloads.astro';
 
 <Downloads />
 
-## Check your download
+## Check your download (optional)
 
-Each file above lists its SHA-256 checksum, the same value GitHub records for the
-release. Compare it with the file you saved:
+Two quick checks, if you want to be sure of what you downloaded:
+
+- **The checksum** tells you the file arrived complete and unchanged — a
+  broken or truncated download shows up at once.
+- **The signature** tells you the files really come from linscp: they are
+  signed with linscp's release key, so nobody else can publish a file that
+  passes, even if they changed it on the way.
+
+**Checksum.** Each file above lists its SHA-256 checksum. Compare it with the
+file you saved:
 
 ```sh
 sha256sum linscp-*.AppImage
@@ -24,6 +32,28 @@ On Windows, in PowerShell:
 ```powershell
 Get-FileHash .\linscp-*-setup.exe
 ```
+
+**Signature.** Download `SHA256SUMS` and its signature `SHA256SUMS.asc` from the
+release, get linscp's release key once, and check them. The last command then
+checks every linscp file in the folder against the signed list:
+
+```sh
+curl -LO https://github.com/99ecarvalho/linscp/releases/latest/download/SHA256SUMS
+curl -LO https://github.com/99ecarvalho/linscp/releases/latest/download/SHA256SUMS.asc
+gpg --recv-keys A679B8C9915BB5ACDD45F91E207FB492B5B214A9
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum --check --ignore-missing SHA256SUMS
+```
+
+`gpg` must report a **good signature** from "Eduardo Correia (linscp release
+signing)", and the key's fingerprint must be
+`A679 B8C9 915B B5AC DD45  F91E 207F B492 B5B2 14A9`. A warning that the key "is
+not certified with a trusted signature" is normal: it only means you have not
+marked the key as trusted yourself — the fingerprint check is what counts. On
+Windows, the same `gpg`
+commands work in [Gpg4win](https://gpg4win.org/). The key is also in the
+repository as
+[release-signing-key.asc](https://github.com/99ecarvalho/linscp/blob/main/doc/release-signing-key.asc).
 
 The Windows builds are not code-signed yet, so SmartScreen may warn the first
 time you run them.
