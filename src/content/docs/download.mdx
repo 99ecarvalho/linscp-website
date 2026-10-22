@@ -7,8 +7,64 @@ eyebrow: Get linscp
 ---
 
 import Downloads from '../../components/Downloads.astro';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 <Downloads />
+
+## Install from a package repository
+
+linscp can also come from a package repository, so your system updates it
+with everything else. On openSUSE, Fedora, Debian and Ubuntu it is built by
+the openSUSE Build Service (its
+[install page](https://software.opensuse.org/download.html?project=home:ercorreia&package=linscp)
+lists every supported system); on Windows it is on
+[Chocolatey](https://community.chocolatey.org/packages/linscp).
+
+<Tabs>
+  <TabItem label="openSUSE">
+```sh
+# Tumbleweed (on Leap 16.0, use 16.0 instead of openSUSE_Tumbleweed)
+sudo zypper addrepo https://download.opensuse.org/repositories/home:/ercorreia/openSUSE_Tumbleweed/home:ercorreia.repo
+sudo zypper refresh
+sudo zypper install linscp
+```
+  </TabItem>
+  <TabItem label="Fedora">
+```sh
+# Fedora 44 (on Fedora 43, use Fedora_43)
+sudo dnf config-manager addrepo --from-repofile=https://download.opensuse.org/repositories/home:/ercorreia/Fedora_44/home:ercorreia.repo
+sudo dnf install linscp
+```
+  </TabItem>
+  <TabItem label="Debian">
+```sh
+# Debian 13
+curl -fsSL https://download.opensuse.org/repositories/home:/ercorreia/Debian_13/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/linscp.gpg
+echo "deb [signed-by=/etc/apt/keyrings/linscp.gpg] https://download.opensuse.org/repositories/home:/ercorreia/Debian_13/ /" | sudo tee /etc/apt/sources.list.d/linscp.list
+sudo apt update
+sudo apt install linscp
+```
+  </TabItem>
+  <TabItem label="Ubuntu">
+```sh
+# Ubuntu 26.04 (on 26.10, use xUbuntu_26.10)
+curl -fsSL https://download.opensuse.org/repositories/home:/ercorreia/xUbuntu_26.04/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/linscp.gpg
+echo "deb [signed-by=/etc/apt/keyrings/linscp.gpg] https://download.opensuse.org/repositories/home:/ercorreia/xUbuntu_26.04/ /" | sudo tee /etc/apt/sources.list.d/linscp.list
+sudo apt update
+sudo apt install linscp
+```
+  </TabItem>
+  <TabItem label="Windows">
+```powershell
+# Chocolatey, in an administrator PowerShell
+choco install linscp
+```
+Chocolatey reviews every new version before listing it; while a version is
+under review, `choco install` installs the previous one, or none yet.
+  </TabItem>
+</Tabs>
+
+These packages are for 64-bit PCs (x86_64).
 
 ## Check your download (optional)
 
