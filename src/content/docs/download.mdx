@@ -49,20 +49,17 @@ sha256sum --check --ignore-missing SHA256SUMS
 signing)", and the key's fingerprint must be
 `A679 B8C9 915B B5AC DD45  F91E 207F B492 B5B2 14A9`. A warning that the key "is
 not certified with a trusted signature" is normal: it only means you have not
-marked the key as trusted yourself — the fingerprint check is what counts. On
-Windows, the same `gpg`
+marked the key as trusted yourself — the fingerprint check is what counts. You can look the
+fingerprint up yourself on the key server, by the e-mail address
+`ecorreia@apliant.com.br`:
+[keys.openpgp.org](https://keys.openpgp.org/search?q=ecorreia%40apliant.com.br).
+On Windows, the same `gpg`
 commands work in [Gpg4win](https://gpg4win.org/). The key is also in the
 repository as
 [release-signing-key.asc](https://github.com/99ecarvalho/linscp/blob/main/doc/release-signing-key.asc).
 
 The Windows builds are not code-signed yet, so SmartScreen may warn the first
 time you run them.
-
-## If you also use WinSCP
-
-linscp uses the same configuration as WinSCP, so both programs see the same
-sites and settings. To keep them apart, use the portable package. See
-[configuration storage](../manual/preferences/storage-and-config/).
 
 ## Build it yourself
 
